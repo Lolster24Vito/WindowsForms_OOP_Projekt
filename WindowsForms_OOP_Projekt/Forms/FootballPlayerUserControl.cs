@@ -1,8 +1,10 @@
 ﻿using DAL.Models;
+using DAL.REPO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -23,36 +25,70 @@ namespace WindowsForms_OOP_Projekt.Forms
             set
             {
                 footballPlayer = value;
-                InitButton();
+               // InitButton();
                 UpdateLabels();
+                InitLoadImage();
             }
         }
 
-        private void InitButton()
-        {
-            btnDragInvisible.FlatStyle = FlatStyle.Flat;
-            btnDragInvisible.FlatAppearance.BorderColor = BackColor;
-            btnDragInvisible.FlatAppearance.MouseOverBackColor = BackColor;
-            btnDragInvisible.FlatAppearance.MouseDownBackColor = BackColor;
-        }
+
 
         private Color  BackgroundColor= Color.Gray;
         private Color ForeColor = Color.Gold;
         private bool dropSuccess;
         public Control controlThatStartedDnD;
         public Color InitColor = Color.Red;
+        private bool favorite;
 
+        private const string USER_PICTURES_PATH = DAL.Constants.ApiConstants.USER_PICTURES_PATH;
+
+        private OpenFileDialog ofd = new OpenFileDialog();
+
+        private Image defaultImage = ImagesResources.profile_icon;
+
+        public bool Favorite { 
+            get => favorite;
+            set {
+                favorite = value;
+                if (favorite)
+                {
+                    pictureBox1.Image = WindowsForms_OOP_Projekt.ImagesResources.star_filled;
+                }
+                else
+                {
+                    pictureBox1.Image = WindowsForms_OOP_Projekt.ImagesResources.star_unfilled;
+                }
+            }
+        }
 
         public FootballPlayerUserControl()
         {
             InitializeComponent();
             this.ContextMenuStrip = cms;
+            InitOpenFileDialog();
+
         }
         public FootballPlayerUserControl(Player player)
         {
             InitializeComponent();
+            this.ContextMenuStrip = cms;
             FootballPlayer = player;
+            InitOpenFileDialog();
+             InitLoadImage();
+
         }
+
+        private void InitLoadImage()
+        {
+            if(FootballPlayer!=null&& FootballPlayer.PicturePath!=null&&FootballPlayer.PicturePath!="")
+            pictureBox2.ImageLocation = FootballPlayer.PicturePath;
+            else
+            {
+            //pictureBox2.ImageLocation = FootballPlayer.PicturePath;
+                
+            }
+        }
+
         private void UpdateLabels()
         {
             if (FootballPlayer != null)
@@ -82,8 +118,45 @@ namespace WindowsForms_OOP_Projekt.Forms
         {
             //btnDragInvisible.Show();
             //StartDnD(sender as Button);
-          //  sender
-            (sender as Button).DoDragDrop(this, DragDropEffects.Copy);
+            //  sender
+            MouseEventArgs me = (MouseEventArgs)e;
+
+            if (me.Button == MouseButtons.Left)
+            {
+
+                // StartDnD(sender as Button);
+                FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
+                //   fb.ContextMenuStrip = cms;
+                //      fb.ContextMenuStrip.GetItemAt(0, 0).Enabled = false;
+                //     fb.ContextMenuStrip.GetItemAt(0, 2).Enabled = false;
+                //     fb.ContextMenuStrip.GetItemAt(0, 1).Enabled = true;
+
+                fb.DoDragDrop(fb, DragDropEffects.Copy);
+            }
+            else if (me.Button == MouseButtons.Right)
+            {
+                FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
+
+                //Point loc = (sender as Control).Location;
+                //this.ContextMenuStrip.Show(new Point(loc.X- e.X , loc.Y - e.Y));  //.Show(this.ContextMenuStrip, new Point(me.X, me.Y));
+                this.ContextMenuStrip.Show(fb,e.Location);
+                if (Favorite)
+                {
+                    this.ContextMenuStrip.Items[0].Enabled = false;
+                    this.ContextMenuStrip.Items[1].Enabled = true;
+                    this.ContextMenuStrip.Items[2].Enabled = true;
+                }
+                else
+                {
+                    this.ContextMenuStrip.Items[0].Enabled = true;
+                    this.ContextMenuStrip.Items[1].Enabled = false;
+                    this.ContextMenuStrip.Items[2].Enabled = true;
+                }
+
+
+            }
+
+            (sender as FootballPlayerUserControl).DoDragDrop(this, DragDropEffects.Copy);
 
 
         }
@@ -92,14 +165,7 @@ namespace WindowsForms_OOP_Projekt.Forms
         private void btnDragInvisible_DragDrop(object sender, DragEventArgs e)
         {
             
-            Button btn = sender as Button;
-            // // btn.BackColor = BackgroundColor;
-            // btn.ForeColor = ForeColor;
-            if(btn != null)
-            btn.BackColor = Color.Purple;
-           // button.ForeColor = Color.Black;
-
-            dropSuccess = true;
+           
         }
 
         private void btnDragInvisible_DragEnter(object sender, DragEventArgs e)
@@ -124,30 +190,104 @@ namespace WindowsForms_OOP_Projekt.Forms
 
         private void btnDragInvisible_Click(object sender, EventArgs e)
         {
+            MouseEventArgs me = (MouseEventArgs)e;
+
+            if (me.Button == MouseButtons.Left)
+            {
+
             // StartDnD(sender as Button);
             FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
-            fb.ContextMenuStrip = cms;
-            fb.ContextMenuStrip.GetItemAt(0, 0).Enabled = false;
-            fb.ContextMenuStrip.GetItemAt(2, 0).Enabled = false;
-            fb.ContextMenuStrip.GetItemAt(1, 0).Enabled = true;
+         //   fb.ContextMenuStrip = cms;
+         //fb.ContextMenuStrip;
+
 
             fb.DoDragDrop(fb, DragDropEffects.Copy);
+            }
+            else if(me.Button == MouseButtons.Right)
+            {
+                
+                this.ContextMenu.Show(this,new Point(me.X, me.Y));
+            }
 
         }
 
         private void favoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MainForm main = this.ParentForm as MainForm;
+            if(main != null)
+            {
+                main.FavoriteFootballPlayer(this);
+            }
         }
 
         private void unfavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Favorite = false;
+            MainForm main = this.ParentForm as MainForm;
+            if (main != null)
+            {
+                main.UnfavoriteFootballPlayer(this);
+            }
         }
-
-        private void EditToolStripMenuItem_Click(object sender, EventArgs e)
+        public void RemoveFavoriteStar()
         {
+            pictureBox1.Image = WindowsForms_OOP_Projekt.ImagesResources.star_unfilled;
+        }
+
+        private  void LoadImageToolStripMenuItem_ClickAsync(object sender, EventArgs e)
+        {
+            //string fileLines = await FileRepo.ReadFromFile(USER_PICTURES_PATH);
+            //settings = UserSettings.ParseFromString(fileLines);
+
+            //LOAD PICTURE IF IT IS IN FILE
+
+            //LOAD File 
+            LoadPicturesFromFileDialogue();
 
         }
+        private void LoadPicturesFromFileDialogue()
+        {
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+
+
+                //ShowThumbnail(file);
+                pictureBox2.ImageLocation = ofd.FileName;
+                this.FootballPlayer.PicturePath = ofd.FileName;
+                MainForm main = this.ParentForm as MainForm;
+                if (main != null)
+                {
+                try
+                {
+                        main.SavePictureOfPlayer(this.FootballPlayer);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                    
+                }
+            }
+            else
+            {
+                pictureBox2.Image = defaultImage;
+                this.FootballPlayer.PicturePath = "";
+                MainForm main = this.ParentForm as MainForm;
+                if (main != null)
+                {
+                    main.RemoveImagesFrom(FootballPlayer);
+                }
+            }
+        }
+
+        private void InitOpenFileDialog()
+        {
+            ofd.Filter = "Pictures|*.jpeg;*.jpg;*.png;|All files|*.*";
+            ofd.Multiselect = false;
+            ofd.Title = "Load pictures...";
+            ofd.InitialDirectory = Application.StartupPath;
+        }
+
     }
 }

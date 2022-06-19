@@ -118,16 +118,28 @@ namespace WindowsForms_OOP_Projekt.Forms
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            DialogResult=DialogResult.OK;
             //check validation
             if (!((rbCroatian.Checked || rbEnglish.Checked) && cbChampionship.SelectedIndex != -1))
             {
                 MessageBox.Show("Molim vas popunite sve vrijednosti");
+                this.DialogResult = DialogResult.None;
                 return;
             }
+            try
+            {
+                FileRepo.SaveToFile(settings.ToString(), USER_SETTINGS_PATH);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            DialogResult =DialogResult.OK;
             //Write to file
             //TRY
-            FileRepo.SaveToFile(settings.ToString(), USER_SETTINGS_PATH);
+            
 
             OpenNextForm();
 

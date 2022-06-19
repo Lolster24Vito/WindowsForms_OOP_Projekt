@@ -25,10 +25,12 @@ namespace WindowsForms_OOP_Projekt
         private const string USER_SETTINGS_PATH = DAL.Constants.ApiConstants.USER_SETTINGS_PATH;
         private const string USER_FAVORITE_MALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
         private const string USER_FAVORITE_FEMALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
+        private const string USER_PICTURES_PATH = DAL.Constants.ApiConstants.USER_PICTURES_PATH;
 
         private UserSettings settings;        
         private List<Player> players = new List<Player>();
         private List<Player> favPlayers = new List<Player>();
+        private List<Player> playersWithPictures = new List<Player>();
 
 
 
@@ -38,6 +40,7 @@ namespace WindowsForms_OOP_Projekt
         
         string endpoint = "";
 
+        
 
         public MainForm()
         {
@@ -76,9 +79,10 @@ namespace WindowsForms_OOP_Projekt
 
             try
             {
-
-                FillComboBox(endpoint);
+                LoadPlayerPicturesAsync();
                 LoadFavoritePlayersAsync();
+                FillComboBox(endpoint);
+
 
                 //  FillLabelTest();
             }
@@ -90,6 +94,19 @@ namespace WindowsForms_OOP_Projekt
             // FillFlowLayoutPanel();
         }
 
+        private async Task LoadPlayerPicturesAsync()
+        {
+                 List<string> fileLines = await FileRepo.ReadFromFileList(USER_PICTURES_PATH);
+            foreach (var line  in fileLines)
+            {
+                playersWithPictures.Add(Player.ParseFromString(line));
+            }
+
+           // settings = UserSettings.ParseFromString(fileLines);
+
+
+        }
+
         private async Task LoadFavoritePlayersAsync()
         {
             favPlayers.Clear();
@@ -97,28 +114,54 @@ namespace WindowsForms_OOP_Projekt
             List<string> linesList = await FileRepo.ReadFromFileList(favEndPoint);
             foreach (var line in linesList)
             {
-                Player pl = Player.ParseFromString(line);
-                favPlayers.Add(pl);
-                AddFavoritePlayerToPanel(pl);
+                try
+                {
+                    Player p = Player.ParseFromString(line);
+                    p.PicturePath = "";
+                    foreach (var pl in playersWithPictures)
+                    {
+                        if (p == pl)
+                        {
+                            p.PicturePath = pl.PicturePath;
+                        }
+                    }
+                    favPlayers.Add(p);
+                    AddFavoritePlayerToPanel(p);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
             }
 
         }
 
         private async void CheckAndApplySettingsAsync()
         {
+
+            List<string> linesList = await FileRepo.ReadFromFileList(USER_SETTINGS_PATH);
+
+
+            string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
+            settings = UserSettings.ParseFromString(fileLines);
+
+
             
-                string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
-                settings =  UserSettings.ParseFromString(fileLines);
 
-           
 
-            if (settings==null ||settings.LanguageCode == null || settings.ChampionshipGroup == null)
+            if (settings == null || settings.LanguageCode == null || settings.ChampionshipGroup == null)
             {
                 OpenSettingsForm();
             }
-            else
+            if (settings == null || settings.LanguageCode == null || settings.ChampionshipGroup == null)
             {
-                if (settings.ChampionshipGroup == ChampionshipType.Male)
+
+                string fileLiness = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
+                settings = UserSettings.ParseFromString(fileLiness);
+            }
+            if (settings.ChampionshipGroup == ChampionshipType.Male)
                 {
                     matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
                 }
@@ -126,7 +169,9 @@ namespace WindowsForms_OOP_Projekt
                 {
                     matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
                 }
-            }
+
+
+            
         }
 
         private void OpenSettingsForm()
@@ -177,7 +222,15 @@ namespace WindowsForms_OOP_Projekt
             
             foreach (var player in startingEleven)
             {
-                players.Add(Player.LoadParameters(player, teamName));
+                Player p = Player.LoadParameters(player, teamName);
+                foreach (var pl in playersWithPictures)
+                {
+                    if (p == pl)
+                    {
+                        p.PicturePath = pl.PicturePath;
+                    }
+                }
+                players.Add(p);
 
             }
 
@@ -192,6 +245,30 @@ namespace WindowsForms_OOP_Projekt
                // player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
             
         }
+
+        internal void SavePictureOfPlayer(Player footballPlayer)
+        {
+            if (playersWithPictures.Contains(footballPlayer)){
+                List<string> lines = new List<string>();
+                playersWithPictures.Remove(footballPlayer);
+                playersWithPictures.Add(footballPlayer);
+                foreach (var p in playersWithPictures)
+                {
+                    lines.Add(p.ToString());
+                }
+
+                FileRepo.SaveToFile(lines, USER_PICTURES_PATH);
+
+            }
+            else
+            {
+                playersWithPictures.Add(footballPlayer);
+                FileRepo.SaveToFileAtEnd(footballPlayer.ToString(), USER_PICTURES_PATH);
+
+            }
+
+        }
+
         private void LoadPlayersToPanel()
         {
 
@@ -202,11 +279,41 @@ namespace WindowsForms_OOP_Projekt
             {
                 FootballPlayerUserControl playerUserController = new FootballPlayerUserControl();
                 playerUserController.FootballPlayer = player;
-                flowLayoutPanel1.Controls.Add(playerUserController);
+                if (CheckIfFavoritePlayer(player))
+                {
+                    playerUserController.Favorite = true;
+                }
+                
+                flpAllTeamPlayers.Controls.Add(playerUserController);
 
             }
-            bool bullshit=false;
             
+        }
+
+        internal void RemoveImagesFrom(Player footballPlayer)
+        {
+            List<string> lines = new List<string>();
+            playersWithPictures.Remove(footballPlayer);
+            foreach (var p in playersWithPictures)
+            {
+                lines.Add(p.ToString());
+            }
+
+            FileRepo.SaveToFile(lines, USER_PICTURES_PATH);
+        }
+
+
+
+        private bool CheckIfFavoritePlayer(Player player)
+        {
+            foreach (var pl in favPlayers)
+            {
+                if (pl == player)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void FillFlowLayoutPanel()
@@ -214,13 +321,13 @@ namespace WindowsForms_OOP_Projekt
             if (selectedCountryCode == null || selectedCountryCode.Length == 0) {
                 return;
             }
-            flowLayoutPanel1.Controls.Clear();
+            flpAllTeamPlayers.Controls.Clear();
 
             for (int i = 0; i < 15; i++)
             {
                 FootballPlayerUserControl playerUserController = new FootballPlayerUserControl();
             //    playerUserController.FootballPlayer=
-                flowLayoutPanel1.Controls.Add(playerUserController);
+                flpAllTeamPlayers.Controls.Add(playerUserController);
             }
         }
 
@@ -246,8 +353,8 @@ namespace WindowsForms_OOP_Projekt
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            flowLayoutPanel1.Controls.Clear();
-            flowLayoutPanel1.Refresh();
+            flpAllTeamPlayers.Controls.Clear();
+            flpAllTeamPlayers.Refresh();
 
             if (cbTeams.SelectedItem != null)
             {
@@ -255,6 +362,7 @@ namespace WindowsForms_OOP_Projekt
              var selected= cbTeams.SelectedValue;
                 selectedCountryCode = TeamModelVersion.GetFifaCodeFromString(selected.ToString());
                 LoadPlayers();
+                //LoadPlayersRankAsync();
                 //selectedCbIndex=cbTeams.SelectedIndex;
             }
 
@@ -291,10 +399,15 @@ namespace WindowsForms_OOP_Projekt
 
         private void flpFavoritePlayers_DragDrop(object sender, DragEventArgs e)
         {
-            FootballPlayerUserControl footballPlayer = (FootballPlayerUserControl)e.Data.GetData(typeof(FootballPlayerUserControl));
-            var fbPlayer = footballPlayer.FootballPlayer;
+            FavoriteFootballPlayer((FootballPlayerUserControl)e.Data.GetData(typeof(FootballPlayerUserControl)));
 
-            bool alreadyAdded =false;
+        }
+
+        public void FavoriteFootballPlayer(FootballPlayerUserControl footballPlayer)
+        {
+            var fbPlayer = footballPlayer.FootballPlayer;
+            footballPlayer.Favorite = true;
+            bool alreadyAdded = false;
             foreach (var player in favPlayers)
             {
                 if (fbPlayer == player)
@@ -315,20 +428,52 @@ namespace WindowsForms_OOP_Projekt
 
             //TODO add code for adding playerUserControl to flpFavoritePlayers
             AddFavoritePlayerToPanel(fbPlayer);
+        }
+        public void UnfavoriteFootballPlayer(FootballPlayerUserControl footballPlayerUserControl)
+        {
+            favPlayers.Remove(footballPlayerUserControl.FootballPlayer);
 
+            foreach (FootballPlayerUserControl control in flpAllTeamPlayers.Controls)
+            {
+                if(footballPlayerUserControl.FootballPlayer == control.FootballPlayer)
+                {
+                    control.Favorite = false;
+                }
+            }
+            foreach (FootballPlayerUserControl control in flpFavoritePlayers.Controls)
+            {
+                if (footballPlayerUserControl.FootballPlayer == control.FootballPlayer)
+                {
+                    control.RemoveFavoriteStar();
+                }
+            }
+            RemoveFavoritePlayerToPanel(footballPlayerUserControl);
+            SaveFavoritePlayers();
+
+        }
+
+        private void RemoveFavoritePlayerToPanel(FootballPlayerUserControl fbPlayer)
+        {
+            flpFavoritePlayers.Controls.Remove(fbPlayer);
+            foreach (FootballPlayerUserControl control in flpFavoritePlayers.Controls)
+            {
+                if (fbPlayer.FootballPlayer == control.FootballPlayer)
+                {
+            flpFavoritePlayers.Controls.Remove(control);
+                }
+            }
         }
 
         private void AddFavoritePlayerToPanel(Player fbPlayer)
         {
             var copyFootballPlayer = new FootballPlayerUserControl(fbPlayer);
+            copyFootballPlayer.Favorite = true;
             flpFavoritePlayers.Controls.Add(copyFootballPlayer);
         }
 
         private void SaveFavoritePlayers()
         {
             List<string> lines = new List<string>();
-
-            if (favPlayers.Count == 0) return;
 
             foreach (var item in favPlayers)
             {
