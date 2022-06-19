@@ -44,8 +44,8 @@
             this.lbCountry = new System.Windows.Forms.Label();
             this.cms = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.favoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unfavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cms.SuspendLayout();
@@ -154,7 +154,7 @@
             // 
             this.btnDragInvisible.BackColor = System.Drawing.Color.White;
             this.btnDragInvisible.Enabled = false;
-            this.btnDragInvisible.Location = new System.Drawing.Point(0, 0);
+            this.btnDragInvisible.Location = new System.Drawing.Point(0, 194);
             this.btnDragInvisible.Name = "btnDragInvisible";
             this.btnDragInvisible.Size = new System.Drawing.Size(239, 270);
             this.btnDragInvisible.TabIndex = 11;
@@ -192,31 +192,31 @@
             this.cms.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.favoriteToolStripMenuItem,
             this.unfavoriteToolStripMenuItem,
-            this.EditToolStripMenuItem});
+            this.LoadImageToolStripMenuItem});
             this.cms.Name = "cms";
-            this.cms.Size = new System.Drawing.Size(148, 76);
+            this.cms.Size = new System.Drawing.Size(158, 76);
             // 
             // favoriteToolStripMenuItem
             // 
             this.favoriteToolStripMenuItem.Name = "favoriteToolStripMenuItem";
-            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(156, 24);
             this.favoriteToolStripMenuItem.Text = "Favorite";
             this.favoriteToolStripMenuItem.Click += new System.EventHandler(this.favoriteToolStripMenuItem_Click);
-            // 
-            // EditToolStripMenuItem
-            // 
-            this.EditToolStripMenuItem.Name = "EditToolStripMenuItem";
-            this.EditToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-            this.EditToolStripMenuItem.Text = "Edit";
-            this.EditToolStripMenuItem.Click += new System.EventHandler(this.EditToolStripMenuItem_Click);
             // 
             // unfavoriteToolStripMenuItem
             // 
             this.unfavoriteToolStripMenuItem.Enabled = false;
             this.unfavoriteToolStripMenuItem.Name = "unfavoriteToolStripMenuItem";
-            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(156, 24);
             this.unfavoriteToolStripMenuItem.Text = "Unfavorite";
             this.unfavoriteToolStripMenuItem.Click += new System.EventHandler(this.unfavoriteToolStripMenuItem_Click);
+            // 
+            // LoadImageToolStripMenuItem
+            // 
+            this.LoadImageToolStripMenuItem.Name = "LoadImageToolStripMenuItem";
+            this.LoadImageToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.LoadImageToolStripMenuItem.Text = "Load Image";
+            this.LoadImageToolStripMenuItem.Click += new System.EventHandler(this.LoadImageToolStripMenuItem_ClickAsync);
             // 
             // FootballPlayerUserControl
             // 
@@ -239,7 +239,12 @@
             this.Controls.Add(this.btnDragInvisible);
             this.Name = "FootballPlayerUserControl";
             this.Size = new System.Drawing.Size(239, 270);
+            this.Click += new System.EventHandler(this.btnDragInvisible_Click);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragEnter);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragDrop);
+            this.DragLeave += new System.EventHandler(this.btnDragInvisible_DragLeave);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnDragInvisible_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cms.ResumeLayout(false);
@@ -266,6 +271,6 @@
         private System.Windows.Forms.ContextMenuStrip cms;
         private System.Windows.Forms.ToolStripMenuItem favoriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unfavoriteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem EditToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LoadImageToolStripMenuItem;
     }
 }

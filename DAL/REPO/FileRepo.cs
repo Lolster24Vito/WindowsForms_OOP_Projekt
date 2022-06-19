@@ -14,6 +14,38 @@ namespace DAL.REPO
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
+                if(lines.Count==0)
+                {
+                    await writer.WriteLineAsync("");
+                    return;
+
+                }
+                foreach (string line in lines)
+                {
+                    await writer.WriteLineAsync(line);
+
+                }
+            }
+        }
+        public static async void SaveToFileAtEnd(string line, string path)
+        {
+            using (StreamWriter writer = new StreamWriter(path,true))
+            {
+                
+                   await writer.WriteLineAsync(line);
+                
+            }
+        }
+        public static async void SaveToFileAtEnd(List<string> lines, string path)
+        {
+            using (StreamWriter writer = new StreamWriter(path,true))
+            {
+                if (lines.Count == 0)
+                {
+                    await writer.WriteLineAsync("");
+                    return;
+
+                }
                 foreach (string line in lines)
                 {
                     await writer.WriteLineAsync(line);
@@ -25,11 +57,12 @@ namespace DAL.REPO
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
-                
-                   await writer.WriteLineAsync(line);
-                
+
+                await writer.WriteLineAsync(line);
+
             }
         }
+
         public static async Task<List<string>> ReadFromFileList(string path)
         {
             List<string> lines=new List<string>();

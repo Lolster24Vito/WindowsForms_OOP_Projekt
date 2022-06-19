@@ -11,60 +11,6 @@ namespace DAL.Models
     {
         private const string PARSE_SEPERATOR = "|";
 
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder(); //string will be appended later
-            sb.Append(Name);
-            sb.Append(PARSE_SEPERATOR);
-            sb.Append(Captain);
-            sb.Append(PARSE_SEPERATOR);
-            sb.Append(ShirtNumber);
-            sb.Append(PARSE_SEPERATOR);
-            sb.Append((int)Position);
-            sb.Append(PARSE_SEPERATOR);
-            sb.Append(PicturePath);
-            sb.Append(PARSE_SEPERATOR);
-            sb.Append(CountryName);
-            return sb.ToString();
-
-
-            //return LanguageCode + System.Environment.NewLine + (int)ChampionshipGroup;
-        }
-        public static Player ParseFromString(string line)
-        {
-            if (line == null || line == "")
-            {
-                //Ajoj;
-            }
-            string[] lines = line.Split(new[] { PARSE_SEPERATOR },
-                StringSplitOptions.None);
-            Player player;
-            try
-            {
-                player = new Player
-                {
-                    Name = lines[0],
-                    Captain = Boolean.Parse(lines[1]),
-                    ShirtNumber = long.Parse(lines[2]),
-                    Position = (Position)int.Parse(lines[3]),
-                    PicturePath = lines[4],
-                    CountryName = lines[5]
-
-
-                };
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-
-
-            return player;
-        }
-
         public string PicturePath { get; set; }
 
         public int NumberOfScores { get; set; }
@@ -137,6 +83,79 @@ namespace DAL.Models
         }
 
         public static bool operator !=(Player pl1, Player pl2) => !(pl1 == pl2);
+        public override bool Equals(Object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Player p = (Player)obj;
+                return (Name == p.Name) && (ShirtNumber == p.ShirtNumber);
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(); //string will be appended later
+            sb.Append(Name);
+            sb.Append(PARSE_SEPERATOR);
+            sb.Append(Captain);
+            sb.Append(PARSE_SEPERATOR);
+            sb.Append(ShirtNumber);
+            sb.Append(PARSE_SEPERATOR);
+            sb.Append((int)Position);
+            sb.Append(PARSE_SEPERATOR);
+            sb.Append(PicturePath);
+            sb.Append(PARSE_SEPERATOR);
+            sb.Append(CountryName);
+
+            return sb.ToString();
+
+
+            //return LanguageCode + System.Environment.NewLine + (int)ChampionshipGroup;
+        }
+        public static Player ParseFromString(string line)
+        {
+            if (line == null || line == "")
+            {
+                //Ajoj;
+            }
+            string[] lines = line.Split(new[] { PARSE_SEPERATOR },
+                StringSplitOptions.None);
+            Player player;
+            try
+            {
+                player = new Player
+                {
+                    Name = lines[0],
+                    Captain = Boolean.Parse(lines[1]),
+                    ShirtNumber = long.Parse(lines[2]),
+                    Position = (Position)int.Parse(lines[3]),
+                    PicturePath = lines[4],
+                    CountryName = lines[5]
+
+
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+            return player;
+        }
+
+       
+
+
     }
+
+
+    
         public enum Position { Defender, Forward, Goalie, Midfield };
 }

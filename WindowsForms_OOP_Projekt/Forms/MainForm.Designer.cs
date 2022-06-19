@@ -38,7 +38,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flpFavoritePlayers = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpAllTeamPlayers = new System.Windows.Forms.FlowLayoutPanel();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.favoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,7 +146,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel1);
+            this.splitContainer1.Panel2.Controls.Add(this.flpAllTeamPlayers);
             this.splitContainer1.Size = new System.Drawing.Size(933, 659);
             this.splitContainer1.SplitterDistance = 230;
             this.splitContainer1.TabIndex = 0;
@@ -167,18 +167,18 @@
             this.flpFavoritePlayers.DragDrop += new System.Windows.Forms.DragEventHandler(this.flpFavoritePlayers_DragDrop);
             this.flpFavoritePlayers.DragEnter += new System.Windows.Forms.DragEventHandler(this.flpFavoritePlayers_DragEnter);
             // 
-            // flowLayoutPanel1
+            // flpAllTeamPlayers
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.AutoSize = true;
-            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(933, 425);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
+            this.flpAllTeamPlayers.AutoScroll = true;
+            this.flpAllTeamPlayers.AutoSize = true;
+            this.flpAllTeamPlayers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpAllTeamPlayers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpAllTeamPlayers.Location = new System.Drawing.Point(0, 0);
+            this.flpAllTeamPlayers.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.flpAllTeamPlayers.Name = "flpAllTeamPlayers";
+            this.flpAllTeamPlayers.Size = new System.Drawing.Size(933, 425);
+            this.flpAllTeamPlayers.TabIndex = 0;
+            this.flpAllTeamPlayers.WrapContents = false;
             // 
             // contextMenuStrip
             // 
@@ -241,7 +241,7 @@
         private System.Windows.Forms.ComboBox cbTeams;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flpAllTeamPlayers;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel flpFavoritePlayers;

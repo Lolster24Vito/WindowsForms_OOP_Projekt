@@ -16,6 +16,8 @@ namespace DAL.Constants
         public const string USER_SETTINGS_PATH = "userSettings.txt";
         public const string USER_FAVORITE_MALE_PLAYERS = "userFavoriteMalePlayers.txt";
         public const string USER_FAVORITE_FEMALE_PLAYERS = "userFavoriteFemalePlayers.txt";
+        public const string USER_PICTURES_PATH = "userPlayerPictures.txt";
+
 
 
 
