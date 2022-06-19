@@ -83,6 +83,7 @@ namespace WindowsForms_OOP_Projekt
                 LoadFavoritePlayersAsync();
                 FillComboBox(endpoint);
 
+
                 //  FillLabelTest();
             }
             catch (Exception)
@@ -361,6 +362,7 @@ namespace WindowsForms_OOP_Projekt
              var selected= cbTeams.SelectedValue;
                 selectedCountryCode = TeamModelVersion.GetFifaCodeFromString(selected.ToString());
                 LoadPlayers();
+                //LoadPlayersRankAsync();
                 //selectedCbIndex=cbTeams.SelectedIndex;
             }
 

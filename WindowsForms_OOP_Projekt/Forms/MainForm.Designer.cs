@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.tcTeams = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControlPlayers = new System.Windows.Forms.TabControl();
+            this.tabPageTeams = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.cbTeams = new System.Windows.Forms.ComboBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPagePlayers = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flpFavoritePlayers = new System.Windows.Forms.FlowLayoutPanel();
             this.flpAllTeamPlayers = new System.Windows.Forms.FlowLayoutPanel();
@@ -43,41 +43,51 @@
             this.favoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tcTeams.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageRankPlayers = new System.Windows.Forms.TabPage();
+            this.tabPageRankTournament = new System.Windows.Forms.TabPage();
+            this.flpPlayerRank = new System.Windows.Forms.FlowLayoutPanel();
+            this.listBoxPlayerRank = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.tabControlPlayers.SuspendLayout();
+            this.tabPageTeams.SuspendLayout();
+            this.tabPagePlayers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
+            this.tabPageRankPlayers.SuspendLayout();
+            this.flpPlayerRank.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tcTeams
+            // tabControlPlayers
             // 
-            this.tcTeams.Controls.Add(this.tabPage1);
-            this.tcTeams.Controls.Add(this.tabPage2);
-            this.tcTeams.Location = new System.Drawing.Point(3, 6);
-            this.tcTeams.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tcTeams.Name = "tcTeams";
-            this.tcTeams.SelectedIndex = 0;
-            this.tcTeams.Size = new System.Drawing.Size(947, 692);
-            this.tcTeams.TabIndex = 0;
+            this.tabControlPlayers.Controls.Add(this.tabPageTeams);
+            this.tabControlPlayers.Controls.Add(this.tabPagePlayers);
+            this.tabControlPlayers.Controls.Add(this.tabPageRankPlayers);
+            this.tabControlPlayers.Controls.Add(this.tabPageRankTournament);
+            this.tabControlPlayers.Location = new System.Drawing.Point(3, 6);
+            this.tabControlPlayers.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControlPlayers.Name = "tabControlPlayers";
+            this.tabControlPlayers.SelectedIndex = 0;
+            this.tabControlPlayers.Size = new System.Drawing.Size(947, 692);
+            this.tabControlPlayers.TabIndex = 0;
             // 
-            // tabPage1
+            // tabPageTeams
             // 
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.btnSettings);
-            this.tabPage1.Controls.Add(this.cbTeams);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(939, 663);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageTeams.Controls.Add(this.label2);
+            this.tabPageTeams.Controls.Add(this.label1);
+            this.tabPageTeams.Controls.Add(this.btnSettings);
+            this.tabPageTeams.Controls.Add(this.cbTeams);
+            this.tabPageTeams.Location = new System.Drawing.Point(4, 25);
+            this.tabPageTeams.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPageTeams.Name = "tabPageTeams";
+            this.tabPageTeams.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPageTeams.Size = new System.Drawing.Size(939, 663);
+            this.tabPageTeams.TabIndex = 0;
+            this.tabPageTeams.Text = "Teams";
+            this.tabPageTeams.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -120,17 +130,17 @@
             this.cbTeams.Text = "---Select---";
             this.cbTeams.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // tabPage2
+            // tabPagePlayers
             // 
-            this.tabPage2.Controls.Add(this.splitContainer1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(939, 663);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPagePlayers.Controls.Add(this.splitContainer1);
+            this.tabPagePlayers.Location = new System.Drawing.Point(4, 25);
+            this.tabPagePlayers.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPagePlayers.Name = "tabPagePlayers";
+            this.tabPagePlayers.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPagePlayers.Size = new System.Drawing.Size(939, 663);
+            this.tabPagePlayers.TabIndex = 1;
+            this.tabPagePlayers.Text = "Players";
+            this.tabPagePlayers.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -208,21 +218,79 @@
             this.removeFavoriteToolStripMenuItem.Size = new System.Drawing.Size(187, 24);
             this.removeFavoriteToolStripMenuItem.Text = "Remove favorite";
             // 
+            // tabPageRankPlayers
+            // 
+            this.tabPageRankPlayers.Controls.Add(this.button2);
+            this.tabPageRankPlayers.Controls.Add(this.button1);
+            this.tabPageRankPlayers.Controls.Add(this.flpPlayerRank);
+            this.tabPageRankPlayers.Location = new System.Drawing.Point(4, 25);
+            this.tabPageRankPlayers.Name = "tabPageRankPlayers";
+            this.tabPageRankPlayers.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRankPlayers.Size = new System.Drawing.Size(939, 663);
+            this.tabPageRankPlayers.TabIndex = 2;
+            this.tabPageRankPlayers.Text = "Players rank";
+            this.tabPageRankPlayers.UseVisualStyleBackColor = true;
+            // 
+            // tabPageRankTournament
+            // 
+            this.tabPageRankTournament.Location = new System.Drawing.Point(4, 25);
+            this.tabPageRankTournament.Name = "tabPageRankTournament";
+            this.tabPageRankTournament.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRankTournament.Size = new System.Drawing.Size(939, 663);
+            this.tabPageRankTournament.TabIndex = 3;
+            this.tabPageRankTournament.Text = "Tournament rank";
+            this.tabPageRankTournament.UseVisualStyleBackColor = true;
+            // 
+            // flpPlayerRank
+            // 
+            this.flpPlayerRank.Controls.Add(this.listBoxPlayerRank);
+            this.flpPlayerRank.Location = new System.Drawing.Point(0, 91);
+            this.flpPlayerRank.Name = "flpPlayerRank";
+            this.flpPlayerRank.Size = new System.Drawing.Size(939, 569);
+            this.flpPlayerRank.TabIndex = 0;
+            // 
+            // listBoxPlayerRank
+            // 
+            this.listBoxPlayerRank.FormattingEnabled = true;
+            this.listBoxPlayerRank.ItemHeight = 16;
+            this.listBoxPlayerRank.Location = new System.Drawing.Point(3, 3);
+            this.listBoxPlayerRank.Name = "listBoxPlayerRank";
+            this.listBoxPlayerRank.Size = new System.Drawing.Size(927, 564);
+            this.listBoxPlayerRank.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(204, 65);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(258, 20);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(188, 65);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(949, 710);
-            this.Controls.Add(this.tcTeams);
+            this.Controls.Add(this.tabControlPlayers);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.tcTeams.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.tabControlPlayers.ResumeLayout(false);
+            this.tabPageTeams.ResumeLayout(false);
+            this.tabPageTeams.PerformLayout();
+            this.tabPagePlayers.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -230,16 +298,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip.ResumeLayout(false);
+            this.tabPageRankPlayers.ResumeLayout(false);
+            this.flpPlayerRank.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tcTeams;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabControl tabControlPlayers;
+        private System.Windows.Forms.TabPage tabPageTeams;
         private System.Windows.Forms.ComboBox cbTeams;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPagePlayers;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel flpAllTeamPlayers;
         private System.Windows.Forms.Button btnSettings;
@@ -250,6 +320,12 @@
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeFavoriteToolStripMenuItem;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabPageRankPlayers;
+        private System.Windows.Forms.TabPage tabPageRankTournament;
+        private System.Windows.Forms.FlowLayoutPanel flpPlayerRank;
+        private System.Windows.Forms.ListBox listBoxPlayerRank;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 
