@@ -33,22 +33,22 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lbKapetan = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbIme = new System.Windows.Forms.Label();
             this.lbBroj = new System.Windows.Forms.Label();
             this.lbPozicija = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnDragInvisible = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.lbCountry = new System.Windows.Forms.Label();
             this.cms = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.favoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unfavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cms.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.cms.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -91,26 +91,6 @@
             this.lbKapetan.TabIndex = 6;
             this.lbKapetan.Text = "Kapetan";
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::WindowsForms_OOP_Projekt.ImagesResources.profile_icon;
-            this.pictureBox2.Location = new System.Drawing.Point(77, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(89, 89);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 5;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::WindowsForms_OOP_Projekt.ImagesResources.star_unfilled;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(52, 43);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            // 
             // lbIme
             // 
             this.lbIme.AutoSize = true;
@@ -150,22 +130,6 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "label4";
             // 
-            // btnDragInvisible
-            // 
-            this.btnDragInvisible.BackColor = System.Drawing.Color.White;
-            this.btnDragInvisible.Enabled = false;
-            this.btnDragInvisible.Location = new System.Drawing.Point(0, 194);
-            this.btnDragInvisible.Name = "btnDragInvisible";
-            this.btnDragInvisible.Size = new System.Drawing.Size(239, 270);
-            this.btnDragInvisible.TabIndex = 11;
-            this.btnDragInvisible.UseVisualStyleBackColor = false;
-            this.btnDragInvisible.Visible = false;
-            this.btnDragInvisible.Click += new System.EventHandler(this.btnDragInvisible_Click);
-            this.btnDragInvisible.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragDrop);
-            this.btnDragInvisible.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragEnter);
-            this.btnDragInvisible.DragLeave += new System.EventHandler(this.btnDragInvisible_DragLeave);
-            this.btnDragInvisible.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnDragInvisible_MouseDown);
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -188,18 +152,20 @@
             // 
             // cms
             // 
+            this.cms.AllowDrop = true;
             this.cms.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.cms.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.favoriteToolStripMenuItem,
             this.unfavoriteToolStripMenuItem,
-            this.LoadImageToolStripMenuItem});
+            this.LoadImageToolStripMenuItem,
+            this.selectToolStripMenuItem});
             this.cms.Name = "cms";
-            this.cms.Size = new System.Drawing.Size(158, 76);
+            this.cms.Size = new System.Drawing.Size(158, 100);
             // 
             // favoriteToolStripMenuItem
             // 
             this.favoriteToolStripMenuItem.Name = "favoriteToolStripMenuItem";
-            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(156, 24);
+            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.favoriteToolStripMenuItem.Text = "Favorite";
             this.favoriteToolStripMenuItem.Click += new System.EventHandler(this.favoriteToolStripMenuItem_Click);
             // 
@@ -207,16 +173,43 @@
             // 
             this.unfavoriteToolStripMenuItem.Enabled = false;
             this.unfavoriteToolStripMenuItem.Name = "unfavoriteToolStripMenuItem";
-            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(156, 24);
+            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.unfavoriteToolStripMenuItem.Text = "Unfavorite";
             this.unfavoriteToolStripMenuItem.Click += new System.EventHandler(this.unfavoriteToolStripMenuItem_Click);
             // 
             // LoadImageToolStripMenuItem
             // 
             this.LoadImageToolStripMenuItem.Name = "LoadImageToolStripMenuItem";
-            this.LoadImageToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.LoadImageToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.LoadImageToolStripMenuItem.Text = "Load Image";
             this.LoadImageToolStripMenuItem.Click += new System.EventHandler(this.LoadImageToolStripMenuItem_ClickAsync);
+            // 
+            // selectToolStripMenuItem
+            // 
+            this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
+            this.selectToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.selectToolStripMenuItem.Text = "Select";
+            this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::WindowsForms_OOP_Projekt.ImagesResources.profile_icon;
+            this.pictureBox2.Location = new System.Drawing.Point(77, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(89, 89);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 5;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::WindowsForms_OOP_Projekt.ImagesResources.star_unfilled;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(52, 43);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
             // 
             // FootballPlayerUserControl
             // 
@@ -224,6 +217,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.ContextMenuStrip = this.cms;
             this.Controls.Add(this.lbCountry);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -236,18 +230,15 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnDragInvisible);
             this.Name = "FootballPlayerUserControl";
-            this.Size = new System.Drawing.Size(239, 270);
+            this.Size = new System.Drawing.Size(191, 232);
             this.Click += new System.EventHandler(this.btnDragInvisible_Click);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragEnter);
-            this.DragOver += new System.Windows.Forms.DragEventHandler(this.btnDragInvisible_DragDrop);
-            this.DragLeave += new System.EventHandler(this.btnDragInvisible_DragLeave);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnDragInvisible_MouseDown);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FootballPlayer_DragEnter);
+            this.DragLeave += new System.EventHandler(this.FootballPlayer_DragLeave);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FootballPlayer_MouseDown);
+            this.cms.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.cms.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,12 +256,12 @@
         private System.Windows.Forms.Label lbBroj;
         private System.Windows.Forms.Label lbPozicija;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnDragInvisible;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbCountry;
         private System.Windows.Forms.ContextMenuStrip cms;
         private System.Windows.Forms.ToolStripMenuItem favoriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unfavoriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LoadImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectToolStripMenuItem;
     }
 }

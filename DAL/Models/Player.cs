@@ -13,8 +13,10 @@ namespace DAL.Models
 
         public string PicturePath { get; set; }
 
-        public int NumberOfScores { get; set; }
+        public int NumberOfGoals { get; set; }
         public int NumberOfYellowCards { get; set; }
+        public int NumberOfRedCards { get; set; }
+
 
         public string CountryName { get; set; }
 

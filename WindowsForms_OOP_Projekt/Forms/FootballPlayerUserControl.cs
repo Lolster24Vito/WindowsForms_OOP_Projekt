@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,19 +26,28 @@ namespace WindowsForms_OOP_Projekt.Forms
             set
             {
                 footballPlayer = value;
-               // InitButton();
+                // InitButton();
                 UpdateLabels();
                 InitLoadImage();
+                InitControlEvents();
             }
         }
 
+        private void InitControlEvents()
+        {
+            foreach (Control item in this.Controls)
+            {
+                //item.do
+                item.MouseDown += FootballPlayer_MouseDown;
+                item.DragEnter += FootballPlayer_DragEnter;
+                item.DragLeave += FootballPlayer_DragLeave;
 
+            }
+        }
 
-        private Color  BackgroundColor= Color.Gray;
-        private Color ForeColor = Color.Gold;
-        private bool dropSuccess;
-        public Control controlThatStartedDnD;
-        public Color InitColor = Color.Red;
+        private Color  defaultBackgroundColor= Color.FromArgb(171,176,175);
+        private Color selectedBackgroundColor = Color.FromArgb(134, 191, 180);
+
         private bool favorite;
 
         private const string USER_PICTURES_PATH = DAL.Constants.ApiConstants.USER_PICTURES_PATH;
@@ -66,6 +76,7 @@ namespace WindowsForms_OOP_Projekt.Forms
             InitializeComponent();
             this.ContextMenuStrip = cms;
             InitOpenFileDialog();
+            InitControlEvents();
 
         }
         public FootballPlayerUserControl(Player player)
@@ -75,16 +86,17 @@ namespace WindowsForms_OOP_Projekt.Forms
             FootballPlayer = player;
             InitOpenFileDialog();
              InitLoadImage();
+            InitControlEvents();
 
         }
 
-        private void InitLoadImage()
+        public void InitLoadImage()
         {
-            if(FootballPlayer!=null&& FootballPlayer.PicturePath!=null&&FootballPlayer.PicturePath!="")
+            if(FootballPlayer!=null&& FootballPlayer.PicturePath!=null&&FootballPlayer.PicturePath!=""&& File.Exists(FootballPlayer.PicturePath))
             pictureBox2.ImageLocation = FootballPlayer.PicturePath;
             else
             {
-            //pictureBox2.ImageLocation = FootballPlayer.PicturePath;
+                pictureBox2.Image = ImagesResources.profile_icon;
                 
             }
         }
@@ -112,34 +124,41 @@ namespace WindowsForms_OOP_Projekt.Forms
 
         }
 
-       
 
-        private void btnDragInvisible_MouseDown(object sender, MouseEventArgs e)
+
+        private void FootballPlayer_MouseDown(object sender, MouseEventArgs e)
         {
             //btnDragInvisible.Show();
             //StartDnD(sender as Button);
             //  sender
+
+
+            FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
+            if (fb == null)
+                fb = (sender as Control).Parent as FootballPlayerUserControl;
+
             MouseEventArgs me = (MouseEventArgs)e;
-
-            if (me.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && (ModifierKeys & Keys.Control) == Keys.Control)
             {
-
-                // StartDnD(sender as Button);
-                FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
-                //   fb.ContextMenuStrip = cms;
-                //      fb.ContextMenuStrip.GetItemAt(0, 0).Enabled = false;
-                //     fb.ContextMenuStrip.GetItemAt(0, 2).Enabled = false;
-                //     fb.ContextMenuStrip.GetItemAt(0, 1).Enabled = true;
-
-                fb.DoDragDrop(fb, DragDropEffects.Copy);
+                SelectMultipleItems(fb);
             }
-            else if (me.Button == MouseButtons.Right)
+            else
             {
-                FootballPlayerUserControl fb = sender as FootballPlayerUserControl;
+
+                if (me.Button == MouseButtons.Left)
+                {
+                    fb.DoDragDrop(fb, DragDropEffects.Copy);
+
+
+                    DeselectFootballPlayers();
+                }
+            }
+            if (me.Button == MouseButtons.Right)
+            {
 
                 //Point loc = (sender as Control).Location;
                 //this.ContextMenuStrip.Show(new Point(loc.X- e.X , loc.Y - e.Y));  //.Show(this.ContextMenuStrip, new Point(me.X, me.Y));
-                this.ContextMenuStrip.Show(fb,e.Location);
+                this.ContextMenuStrip.Show(fb, e.Location);
                 if (Favorite)
                 {
                     this.ContextMenuStrip.Items[0].Enabled = false;
@@ -156,33 +175,39 @@ namespace WindowsForms_OOP_Projekt.Forms
 
             }
 
-            (sender as FootballPlayerUserControl).DoDragDrop(this, DragDropEffects.Copy);
+            fb.DoDragDrop(this, DragDropEffects.Copy);
 
 
         }
 
-
-        private void btnDragInvisible_DragDrop(object sender, DragEventArgs e)
+        private void DeselectFootballPlayers()
         {
-            
-           
+            MainForm main = this.ParentForm as MainForm;
+            if (main != null)
+            {
+                main.DeselectMultipleFootballPlayers();
+            }
         }
 
-        private void btnDragInvisible_DragEnter(object sender, DragEventArgs e)
+        private void SelectMultipleItems(FootballPlayerUserControl fb)
         {
-           /* Button btn = sender as Button;
-            btn.BackColor = Color.Green;
+            MainForm main = this.ParentForm as MainForm;
+            if (main != null)
+            {
+                this.BorderStyle = BorderStyle.Fixed3D;
+                main.SelectedMultipleFootballPlayerUserControl(fb);
+            }
+        }
 
-            if (btn == controlThatStartedDnD)
-                return;
 
 
-            e.Effect = DragDropEffects.Move;
-            label4.Text = "Drop allowed";*/
+        private void FootballPlayer_DragEnter(object sender, DragEventArgs e)
+        {
+          
            e.Effect = DragDropEffects.Move;
         }
 
-        private void btnDragInvisible_DragLeave(object sender, EventArgs e)
+        private void FootballPlayer_DragLeave(object sender, EventArgs e)
         {
             label4.Text = "Drop not allowed";
 
@@ -289,5 +314,15 @@ namespace WindowsForms_OOP_Projekt.Forms
             ofd.InitialDirectory = Application.StartupPath;
         }
 
+        private void selectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectMultipleItems(this);
+        }
+
+        internal void ChangePicture(string picturePath)
+        {
+            pictureBox2.ImageLocation = picturePath;
+            this.FootballPlayer.PicturePath = picturePath;
+        }
     }
 }
