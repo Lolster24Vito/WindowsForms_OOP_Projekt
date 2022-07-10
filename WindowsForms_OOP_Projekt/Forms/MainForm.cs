@@ -24,7 +24,7 @@ namespace WindowsForms_OOP_Projekt
         Dictionary<string,Team> teams = new Dictionary<string,Team>();
 
         private string selectedCountryCode;
-        private int selectedCbIndex=-1;
+        private int selectedCbIndex=0;
         private const string USER_SETTINGS_PATH = DAL.Constants.ApiConstants.USER_SETTINGS_PATH;
         private const string USER_FAVORITE_MALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
         private const string USER_FAVORITE_FEMALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
@@ -511,12 +511,7 @@ namespace WindowsForms_OOP_Projekt
                 var teams = await repo.GetTeams(endpoint);
                 cbTeams.DataSource = teams;
 
-                Dictionary<string, TeamModelVersion> teamsDictionary = new Dictionary<string, TeamModelVersion>();
-
-                foreach (var team in teams)
-                {
-                    teamsDictionary.Add(team.Country, team);
-                }
+                
 
                 //if already selected automatically select and focus on other tabs
             cbTeams.Enabled = true;
@@ -561,14 +556,11 @@ namespace WindowsForms_OOP_Projekt
             switch (newForm.ShowDialog())
             {
                 case DialogResult.Cancel:
-                    label1.Text = "Cancel";
                     break;
                     case DialogResult.OK:
-                    label1.Text = "OK";
                     Init();
                     break;
                  default:
-                    label1.Text = "Default";
 
                     break;
 

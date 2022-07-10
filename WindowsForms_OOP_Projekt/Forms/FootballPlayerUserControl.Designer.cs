@@ -36,7 +36,6 @@
             this.lbIme = new System.Windows.Forms.Label();
             this.lbBroj = new System.Windows.Forms.Label();
             this.lbPozicija = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lbCountry = new System.Windows.Forms.Label();
             this.cms = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -121,15 +120,6 @@
             this.lbPozicija.TabIndex = 9;
             this.lbPozicija.Text = "Pozicija";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(148, 143);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 16);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "label4";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -165,7 +155,7 @@
             // favoriteToolStripMenuItem
             // 
             this.favoriteToolStripMenuItem.Name = "favoriteToolStripMenuItem";
-            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.favoriteToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.favoriteToolStripMenuItem.Text = "Favorite";
             this.favoriteToolStripMenuItem.Click += new System.EventHandler(this.favoriteToolStripMenuItem_Click);
             // 
@@ -173,21 +163,21 @@
             // 
             this.unfavoriteToolStripMenuItem.Enabled = false;
             this.unfavoriteToolStripMenuItem.Name = "unfavoriteToolStripMenuItem";
-            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.unfavoriteToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.unfavoriteToolStripMenuItem.Text = "Unfavorite";
             this.unfavoriteToolStripMenuItem.Click += new System.EventHandler(this.unfavoriteToolStripMenuItem_Click);
             // 
             // LoadImageToolStripMenuItem
             // 
             this.LoadImageToolStripMenuItem.Name = "LoadImageToolStripMenuItem";
-            this.LoadImageToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.LoadImageToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.LoadImageToolStripMenuItem.Text = "Load Image";
             this.LoadImageToolStripMenuItem.Click += new System.EventHandler(this.LoadImageToolStripMenuItem_ClickAsync);
             // 
             // selectToolStripMenuItem
             // 
             this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-            this.selectToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.selectToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
             this.selectToolStripMenuItem.Text = "Select";
             this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
             // 
@@ -220,7 +210,6 @@
             this.ContextMenuStrip = this.cms;
             this.Controls.Add(this.lbCountry);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.lbPozicija);
             this.Controls.Add(this.lbBroj);
             this.Controls.Add(this.lbIme);
@@ -255,7 +244,6 @@
         private System.Windows.Forms.Label lbIme;
         private System.Windows.Forms.Label lbBroj;
         private System.Windows.Forms.Label lbPozicija;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbCountry;
         private System.Windows.Forms.ContextMenuStrip cms;
