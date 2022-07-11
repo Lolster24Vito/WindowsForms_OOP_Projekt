@@ -31,13 +31,13 @@
             <Image Source="Resources\SettingsIcon.png"></Image>
         </Button>
         <ComboBox x:Name="cbTeamL" VerticalAlignment="Center" Grid.Column="1"  
-                  FontSize="22"  Margin="10,0,10,0" Height="36">
+                  FontSize="15"  Margin="10,0,10,0" Height="36">
 
         </ComboBox>
         <Label Content="3-0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Height="40" Width="42"/>
 
         <ComboBox x:Name="cbTeamR" VerticalAlignment="Center" Grid.Column="3"  
-                  FontSize="22" Grid.ColumnSpan="2" Height="36" Margin="0,0,50,0" IsEnabled="False" >
+                  FontSize="15" Grid.ColumnSpan="2" Height="36" Margin="0,0,50,0" IsEnabled="False" >
 
         </ComboBox>
         <Image Source="Resources\soccer-field.jpg" Grid.ColumnSpan="5" Stretch="Fill" Margin="50,48,50,0" Grid.RowSpan="2"/>
