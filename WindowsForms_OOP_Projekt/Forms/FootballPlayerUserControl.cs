@@ -209,7 +209,6 @@ namespace WindowsForms_OOP_Projekt.Forms
 
         private void FootballPlayer_DragLeave(object sender, EventArgs e)
         {
-            label4.Text = "Drop not allowed";
 
         }
 

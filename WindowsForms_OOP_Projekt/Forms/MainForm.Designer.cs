@@ -31,8 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControlPlayers = new System.Windows.Forms.TabControl();
             this.tabPageTeams = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.cbTeams = new System.Windows.Forms.ComboBox();
             this.tabPagePlayers = new System.Windows.Forms.TabPage();
@@ -92,8 +90,6 @@
             // 
             // tabPageTeams
             // 
-            this.tabPageTeams.Controls.Add(this.label2);
-            this.tabPageTeams.Controls.Add(this.label1);
             this.tabPageTeams.Controls.Add(this.btnSettings);
             this.tabPageTeams.Controls.Add(this.cbTeams);
             this.tabPageTeams.Location = new System.Drawing.Point(4, 25);
@@ -104,24 +100,6 @@
             this.tabPageTeams.TabIndex = 0;
             this.tabPageTeams.Text = "Teams";
             this.tabPageTeams.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 16);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "label2";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 208);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 16);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "label1";
             // 
             // btnSettings
             // 
@@ -447,7 +425,6 @@
             this.Click += new System.EventHandler(this.flpFavoritePlayers_Click);
             this.tabControlPlayers.ResumeLayout(false);
             this.tabPageTeams.ResumeLayout(false);
-            this.tabPageTeams.PerformLayout();
             this.tabPagePlayers.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -474,9 +451,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel flpAllTeamPlayers;
         private System.Windows.Forms.Button btnSettings;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel flpFavoritePlayers;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tabPageRankPlayers;
         private System.Windows.Forms.TabPage tabPageRankTournament;
         private System.Windows.Forms.FlowLayoutPanel flpPlayerRank;

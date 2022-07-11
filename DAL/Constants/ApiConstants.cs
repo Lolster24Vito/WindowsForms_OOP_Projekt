@@ -13,10 +13,12 @@ namespace DAL.Constants
         public const string FEMALE_MATCHES_ENDPOINT = "http://worldcup.sfg.io/matches";
         public const string MALE_MATCHES_ENDPOINT = "http://world-cup-json-2018.herokuapp.com/matches";
         
-        public const string USER_SETTINGS_PATH = "userSettings.txt";
-        public const string USER_FAVORITE_MALE_PLAYERS = "userFavoriteMalePlayers.txt";
-        public const string USER_FAVORITE_FEMALE_PLAYERS = "userFavoriteFemalePlayers.txt";
-        public const string USER_PICTURES_PATH = "userPlayerPictures.txt";
+        //public const string USER_SETTINGS_PATH = "userSettings.txt";
+        public const string USER_SETTINGS_PATH = @"..\..\..\SettingsFiles\userSettings.txt";
+        public const string USER_FAVORITE_MALE_PLAYERS =  @"..\..\..\FavoritePlayersFiles\userFavoriteMalePlayers.txt";
+        public const string USER_FAVORITE_TEAM =  @"..\..\..\FavoritePlayersFiles\FavoriteTeam.txt";
+        public const string USER_FAVORITE_FEMALE_PLAYERS = @"..\..\..\FavoritePlayersFiles\userFavoriteFemalePlayers.txt";
+        public const string USER_PICTURES_PATH = @"..\..\..\PlayerPicturesPath\userPlayerPictures.txt";
 
 
 

@@ -66,6 +66,10 @@ namespace DAL.REPO
         public static async Task<List<string>> ReadFromFileList(string path)
         {
             List<string> lines=new List<string>();
+            if (!CheckIfExists(path))
+            {
+                return lines;
+            }
             using (StreamReader reader = new StreamReader(path))
             {
                 while (!reader.EndOfStream)
@@ -78,8 +82,13 @@ namespace DAL.REPO
         public static async Task<string> ReadFromFile(string path)
         {
             string lines = "";
-            if (!File.Exists(path))
+            string fullPath = Path.GetFullPath(path);
+            string directoryPath = Path.GetDirectoryName(fullPath);
+
+            if (!CheckIfExists(path))
+            {
                 return lines;
+            }
             using (StreamReader reader = new StreamReader(path))
             {
                 while (!reader.EndOfStream)
@@ -89,6 +98,23 @@ namespace DAL.REPO
                 }
             }
             return lines;
+        }
+        public static bool CheckIfExists(string path)
+        {
+            bool exists = true;
+            string fullPath = Path.GetFullPath(path);
+            string directoryPath = Path.GetDirectoryName(fullPath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+
+                exists = false;
+            }
+            if (!File.Exists(fullPath))
+            {
+                exists = false;
+            }
+            return exists;
         }
     }
 }

@@ -74,9 +74,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ApiConstants.cs" />
+    <Compile Include="Models\UserSettings.cs" />
     <Compile Include="REPO\FileRepo.cs" />
     <Compile Include="REPO\IRepoJSONDeserialize.cs" />
     <Compile Include="Models\MatchModel.cs" />
