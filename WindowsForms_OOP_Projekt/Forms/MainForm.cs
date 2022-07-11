@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DAL.Models;
 using DAL;
-using WindowsForms_OOP_Projekt.Models;
 using WindowsForms_OOP_Projekt.Forms;
 using DAL.REPO;
 using System.Diagnostics;
@@ -21,16 +20,17 @@ namespace WindowsForms_OOP_Projekt
     public partial class MainForm : Form
     {
         IRepoJSONDeserialize repo = RepositoryFactory.GetRepository();
-        Dictionary<string,Team> teams = new Dictionary<string,Team>();
+        Dictionary<string, Team> teams = new Dictionary<string, Team>();
 
         private string selectedCountryCode;
-        private int selectedCbIndex=0;
+        private int selectedCbIndex = 0;
         private const string USER_SETTINGS_PATH = DAL.Constants.ApiConstants.USER_SETTINGS_PATH;
         private const string USER_FAVORITE_MALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
         private const string USER_FAVORITE_FEMALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
         private const string USER_PICTURES_PATH = DAL.Constants.ApiConstants.USER_PICTURES_PATH;
+        private const string USER_FAVORITE_TEAM = DAL.Constants.ApiConstants.USER_FAVORITE_TEAM;
 
-        private UserSettings settings;        
+        private UserSettings settings;
         private List<Player> players = new List<Player>();
         private List<Player> favPlayers = new List<Player>();
         private List<Player> playersWithPictures = new List<Player>();
@@ -38,13 +38,12 @@ namespace WindowsForms_OOP_Projekt
         List<MatchesJson> AllTeamMatches;
 
 
-        private string matchesEndpoint="";
+        private string matchesEndpoint = "";
 
         private string favEndPoint = "";
-        
-        string endpoint = "";
 
-        
+
+        private bool firstTimeLoadingComboBox = true;
 
         public MainForm()
         {
@@ -54,7 +53,7 @@ namespace WindowsForms_OOP_Projekt
         }
         private void MainForm_Shown(object sender, EventArgs e)
         {
-           
+
         }
         private void Init()
         {
@@ -65,26 +64,14 @@ namespace WindowsForms_OOP_Projekt
 
 
 
-            if (settings.ChampionshipGroup == ChampionshipType.Male)
-            {
-                endpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
-                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
-
-
-            }
-            if (settings.ChampionshipGroup == ChampionshipType.Female)
-            {
-                endpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
-                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
-
-
-            }
+           
 
             try
             {
                 LoadPlayerPicturesAsync();
                 LoadFavoritePlayersAsync();
-                FillComboBox(endpoint);
+                LoadFavoriteTeam();
+                FillComboBox(matchesEndpoint);
 
 
                 //  FillLabelTest();
@@ -98,12 +85,14 @@ namespace WindowsForms_OOP_Projekt
             DataGridInit();
         }
 
+
+
         private void DataGridInit()
         {
 
 
-             playersDataGridView.AutoGenerateColumns = false;
-             playersDataGridView.AutoSize = true;
+            playersDataGridView.AutoGenerateColumns = false;
+            playersDataGridView.AutoSize = true;
 
             MatchesDataGridView.AutoGenerateColumns = false;
             MatchesDataGridView.AutoSize = true;
@@ -113,9 +102,9 @@ namespace WindowsForms_OOP_Projekt
             if (players.Count() > 0)
             {
                 LoadPlayersRanksToDataGridView();
-               // dataGridView1.Refresh();
+                // dataGridView1.Refresh();
             }
-            
+
 
 
 
@@ -126,13 +115,13 @@ namespace WindowsForms_OOP_Projekt
 
         private async Task LoadPlayerPicturesAsync()
         {
-                 List<string> fileLines = await FileRepo.ReadFromFileList(USER_PICTURES_PATH);
-            foreach (var line  in fileLines)
+            List<string> fileLines = await FileRepo.ReadFromFileList(USER_PICTURES_PATH);
+            foreach (var line in fileLines)
             {
                 playersWithPictures.Add(Player.ParseFromString(line));
             }
 
-           // settings = UserSettings.ParseFromString(fileLines);
+            // settings = UserSettings.ParseFromString(fileLines);
 
 
         }
@@ -171,14 +160,11 @@ namespace WindowsForms_OOP_Projekt
         private async void CheckAndApplySettingsAsync()
         {
 
-            List<string> linesList = await FileRepo.ReadFromFileList(USER_SETTINGS_PATH);
-
-
             string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
             settings = UserSettings.ParseFromString(fileLines);
 
 
-            
+
 
 
             if (settings == null || settings.LanguageCode == null || settings.ChampionshipGroup == null)
@@ -192,19 +178,19 @@ namespace WindowsForms_OOP_Projekt
                 settings = UserSettings.ParseFromString(fileLiness);
             }
             if (settings.ChampionshipGroup == ChampionshipType.Male)
-                {
-                    matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
-                }
-                if (settings.ChampionshipGroup == ChampionshipType.Female)
-                {
-                    matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
-                }
+            {
+                matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
+            }
+            if (settings.ChampionshipGroup == ChampionshipType.Female)
+            {
+                matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
+            }
 
 
-            
+
         }
 
-  
+
 
         private void OpenSettingsForm()
         {
@@ -231,27 +217,27 @@ namespace WindowsForms_OOP_Projekt
             Init();
         }
 
-      /*  private async void FillLabelTest()
-        {
-            List<MatchesJson> players = await repo.GetMatches(DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT,"ARG");
-            foreach (var player in players)
-            {
-                player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
-            }
-        }*/
+        /*  private async void FillLabelTest()
+          {
+              List<MatchesJson> players = await repo.GetMatches(DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT,"ARG");
+              foreach (var player in players)
+              {
+                  player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
+              }
+          }*/
         private async void LoadPlayers()
         {
             //  players = await repo.GetMatches(DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT, "ARG");
-             AllTeamMatches = await repo.GetMatches(matchesEndpoint, selectedCountryCode);
-            
-            if (AllTeamMatches == null||AllTeamMatches[0]==null)
+            AllTeamMatches = await repo.GetMatches(matchesEndpoint, selectedCountryCode);
+
+            if (AllTeamMatches == null || AllTeamMatches[0] == null)
             {
 
                 return;
             }
-           List<StartingEleven> startingEleven = new List<StartingEleven>();
+            List<StartingEleven> startingEleven = new List<StartingEleven>();
             List<TeamEvent> teamEvents = new List<TeamEvent>();
-            string teamName="";
+            string teamName = "";
 
             if (AllTeamMatches[0].AwayTeam.Code == selectedCountryCode)
             {
@@ -259,11 +245,11 @@ namespace WindowsForms_OOP_Projekt
                 teamName = AllTeamMatches[0].AwayTeamCountry;
 
             }
-            if(AllTeamMatches[0].HomeTeam.Code == selectedCountryCode)
+            if (AllTeamMatches[0].HomeTeam.Code == selectedCountryCode)
             {
                 startingEleven = AllTeamMatches[0].HomeTeamStatistics.StartingEleven;
                 teamName = AllTeamMatches[0].HomeTeamCountry;
-               
+
 
             }
 
@@ -278,14 +264,14 @@ namespace WindowsForms_OOP_Projekt
                 }
                 if (match.HomeTeam.Code == selectedCountryCode)
                 {
-                        teamEvents.AddRange(match.HomeTeamEvents);
+                    teamEvents.AddRange(match.HomeTeamEvents);
                 }
             }
 
             players.Clear();
-                
 
-            
+
+
             foreach (var player in startingEleven)
             {
                 Player p = Player.LoadParameters(player, teamName);
@@ -296,7 +282,7 @@ namespace WindowsForms_OOP_Projekt
                         p.PicturePath = pl.PicturePath;
                     }
                 }
-                 p=LoadRankInfo(p,teamEvents);
+                p = LoadRankInfo(p, teamEvents);
                 players.Add(p);
 
             }
@@ -309,16 +295,16 @@ namespace WindowsForms_OOP_Projekt
             //if awayteam is selected countrycode get players
             //todo starting eleven add as a local private variable
             //VITO STAO SI OVDJE TODO:
-           // List<StartingEleven> startingEleven = firstMatchJson[0].HomeTeamStatistics.StartingEleven;
+            // List<StartingEleven> startingEleven = firstMatchJson[0].HomeTeamStatistics.StartingEleven;
 
-               // player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
-            
+            // player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
+
         }
 
         private void LoadTournamentToDataGridView()
         {
             MatchesDataGridView.Rows.Clear();
-            AllTeamMatches.ForEach(match=>MatchesDataGridView.Rows.Add(match.Location,match.HomeTeamCountry,match.AwayTeamCountry,match.Attendance));
+            AllTeamMatches.ForEach(match => MatchesDataGridView.Rows.Add(match.Location, match.HomeTeamCountry, match.AwayTeamCountry, match.Attendance));
             MatchesDataGridView.Refresh();
         }
 
@@ -327,12 +313,12 @@ namespace WindowsForms_OOP_Projekt
             //dataGridView1.DataSource = players;
             playersDataGridView.Rows.Clear();
 
-                foreach (var p in players)
+            foreach (var p in players)
             {
                 Image image;
-                if (p.PicturePath != null && p.PicturePath.Trim().Length > 0&&File.Exists(p.PicturePath))
+                if (p.PicturePath != null && p.PicturePath.Trim().Length > 0 && File.Exists(p.PicturePath))
                 {
-                    image=Image.FromFile(p.PicturePath);
+                    image = Image.FromFile(p.PicturePath);
                 }
                 else
                 {
@@ -372,8 +358,8 @@ namespace WindowsForms_OOP_Projekt
                 }
             }
             player.NumberOfYellowCards = yellowCardCounter;
-            player.NumberOfRedCards= recCardCounter;
-            player.NumberOfGoals= goalCounter;
+            player.NumberOfRedCards = recCardCounter;
+            player.NumberOfGoals = goalCounter;
             return player;
         }
 
@@ -425,8 +411,8 @@ namespace WindowsForms_OOP_Projekt
             {
                 if (item.FootballPlayer == footballPlayer)
                 {
-                    item.FootballPlayer.PicturePath=footballPlayer.PicturePath;
-                item.InitLoadImage();
+                    item.FootballPlayer.PicturePath = footballPlayer.PicturePath;
+                    item.InitLoadImage();
                 }
             }
             foreach (FootballPlayerUserControl item in flpAllTeamPlayers.Controls)
@@ -447,7 +433,7 @@ namespace WindowsForms_OOP_Projekt
         {
 
 
-            
+
 
             foreach (var player in players)
             {
@@ -457,11 +443,11 @@ namespace WindowsForms_OOP_Projekt
                 {
                     playerUserController.Favorite = true;
                 }
-                
+
                 flpAllTeamPlayers.Controls.Add(playerUserController);
 
             }
-            
+
         }
 
         internal void RemoveImagesFrom(Player footballPlayer)
@@ -492,7 +478,8 @@ namespace WindowsForms_OOP_Projekt
 
         private void FillFlowLayoutPanel()
         {
-            if (selectedCountryCode == null || selectedCountryCode.Length == 0) {
+            if (selectedCountryCode == null || selectedCountryCode.Length == 0)
+            {
                 return;
             }
             flpAllTeamPlayers.Controls.Clear();
@@ -500,23 +487,35 @@ namespace WindowsForms_OOP_Projekt
             for (int i = 0; i < 15; i++)
             {
                 FootballPlayerUserControl playerUserController = new FootballPlayerUserControl();
-            //    playerUserController.FootballPlayer=
+                //    playerUserController.FootballPlayer=
                 flpAllTeamPlayers.Controls.Add(playerUserController);
             }
         }
 
-        private async void   FillComboBox(string endpoint)
+        private async void FillComboBox(string endpoint)
         {
             cbTeams.Enabled = false;
-                var teams = await repo.GetTeams(endpoint);
-                cbTeams.DataSource = teams;
+            var teams = await repo.GetTeams(endpoint);
+            int selectedIndexFromFile = 0;
+            int counter = 0;
+            foreach (var t in teams)
+            {
+                if (t.FifaCode == selectedCountryCode.Trim())
+                {
+                    selectedIndexFromFile = counter;
+                    break;
+                }
+                counter++;
+            }
+            cbTeams.DataSource = teams;
+            firstTimeLoadingComboBox = false;
+            cbTeams.SelectedIndex = selectedIndexFromFile;
 
-                
 
-                //if already selected automatically select and focus on other tabs
+            //if already selected automatically select and focus on other tabs
             cbTeams.Enabled = true;
-            
-            cbTeams.SelectedIndex = selectedCbIndex;
+
+
 
         }
 
@@ -531,22 +530,48 @@ namespace WindowsForms_OOP_Projekt
             playersDataGridView.Rows.Clear();
             playersDataGridView.Refresh();
 
-            if (cbTeams.SelectedItem != null)
+            if (!firstTimeLoadingComboBox)
             {
 
-             var selected= cbTeams.SelectedValue;
+                var selected = cbTeams.SelectedValue;
                 selectedCountryCode = TeamModelVersion.GetFifaCodeFromString(selected.ToString());
+                try
+                {
+
+                    SaveFavoriteTeam(selectedCountryCode);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
                 LoadPlayers();
                 //selectedCbIndex=cbTeams.SelectedIndex;
             }
 
         }
 
+        private void SaveFavoriteTeam(string selectedCountryCode)
+        {
+            FileRepo.SaveToFile(selectedCountryCode, USER_FAVORITE_TEAM);
+        }
+        private async void LoadFavoriteTeam()
+        {
 
+            try
+            {
+                selectedCountryCode = await FileRepo.ReadFromFile(USER_FAVORITE_TEAM);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            
+
             selectedCbIndex = cbTeams.SelectedIndex;
             var newForm = new LanguageGenderForm();
             newForm.SetNextDialogueCheck(false);
@@ -557,10 +582,10 @@ namespace WindowsForms_OOP_Projekt
             {
                 case DialogResult.Cancel:
                     break;
-                    case DialogResult.OK:
+                case DialogResult.OK:
                     Init();
                     break;
-                 default:
+                default:
 
                     break;
 
@@ -568,12 +593,12 @@ namespace WindowsForms_OOP_Projekt
             // dialogBoxWithResult.Close();
         }
 
-        private void flpFavoritePlayers_DragEnter(object sender, DragEventArgs e)=> e.Effect = DragDropEffects.Copy;
+        private void flpFavoritePlayers_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Copy;
 
         private void flpFavoritePlayers_DragDrop(object sender, DragEventArgs e)
         {
-            if(multipleSelectedFootballPlayers.Count==0)
-            FavoriteFootballPlayer((FootballPlayerUserControl)e.Data.GetData(typeof(FootballPlayerUserControl)));
+            if (multipleSelectedFootballPlayers.Count == 0)
+                FavoriteFootballPlayer((FootballPlayerUserControl)e.Data.GetData(typeof(FootballPlayerUserControl)));
             else
             {
                 try
@@ -590,7 +615,7 @@ namespace WindowsForms_OOP_Projekt
                 }
 
             }
-                DeselectMultipleFootballPlayers();
+            DeselectMultipleFootballPlayers();
         }
         public void SaveFootballPlayerFilePanel(FootballPlayerUserControl footballPlayer)
         {
@@ -630,16 +655,16 @@ namespace WindowsForms_OOP_Projekt
         }
         public void UnfavoriteFootballPlayer(FootballPlayerUserControl footballPlayerUserControl)
         {
-            if(multipleSelectedFootballPlayers.Count == 0)
+            if (multipleSelectedFootballPlayers.Count == 0)
             {
-            UnfavoriteFootballPlayerSaveToFileAndPanel(footballPlayerUserControl);
+                UnfavoriteFootballPlayerSaveToFileAndPanel(footballPlayerUserControl);
 
             }
             else
             {
                 foreach (var p in multipleSelectedFootballPlayers)
                 {
-            UnfavoriteFootballPlayerSaveToFileAndPanel(p);
+                    UnfavoriteFootballPlayerSaveToFileAndPanel(p);
 
                 }
             }
@@ -675,7 +700,7 @@ namespace WindowsForms_OOP_Projekt
             {
                 if (fbPlayer.FootballPlayer == control.FootballPlayer)
                 {
-            flpFavoritePlayers.Controls.Remove(control);
+                    flpFavoritePlayers.Controls.Remove(control);
                 }
             }
         }
@@ -693,10 +718,10 @@ namespace WindowsForms_OOP_Projekt
 
             foreach (var item in favPlayers)
             {
-                lines.Add( item.ToString());
+                lines.Add(item.ToString());
             }
             //TRY ADD
-           
+
             try
             {
 
@@ -712,7 +737,7 @@ namespace WindowsForms_OOP_Projekt
 
         }
 
-       
+
 
 
 
@@ -732,18 +757,19 @@ namespace WindowsForms_OOP_Projekt
             if (printPlayers)
             {
 
-            
-            var bmp = new Bitmap(playersDataGridView.Size.Width, playersDataGridView.Size.Height);
 
-            // svaka kontrola ima definiranu metodu DrawToBitmap
-            playersDataGridView.DrawToBitmap(bmp, new Rectangle
-            {
-                X=0,Y=0,
-                Width=playersDataGridView.Width,
-                Height=playersDataGridView.Height
-            });
+                var bmp = new Bitmap(playersDataGridView.Size.Width, playersDataGridView.Size.Height);
 
-            e.Graphics.DrawImage(bmp, x, y);
+                // svaka kontrola ima definiranu metodu DrawToBitmap
+                playersDataGridView.DrawToBitmap(bmp, new Rectangle
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = playersDataGridView.Width,
+                    Height = playersDataGridView.Height
+                });
+
+                e.Graphics.DrawImage(bmp, x, y);
             }
             else if (printMatches)
             {
@@ -754,7 +780,8 @@ namespace WindowsForms_OOP_Projekt
                 // svaka kontrola ima definiranu metodu DrawToBitmap
                 MatchesDataGridView.DrawToBitmap(bmp, new Rectangle
                 {
-                    X=0,Y=0,
+                    X = 0,
+                    Y = 0,
                     Width = MatchesDataGridView.Width,
                     Height = MatchesDataGridView.Height
                 });
@@ -771,7 +798,7 @@ namespace WindowsForms_OOP_Projekt
         }
 
 
-       private bool printPlayers = false;
+        private bool printPlayers = false;
         private void btnPrintPlayers_Click(object sender, EventArgs e)
         {
             printPlayers = true;
@@ -793,7 +820,7 @@ namespace WindowsForms_OOP_Projekt
 
         private void btnPrintMatches_Click(object sender, EventArgs e)
         {
-            printMatches=true;
+            printMatches = true;
             printPlayers = false;
 
             if (printDialog.ShowDialog() == DialogResult.OK)

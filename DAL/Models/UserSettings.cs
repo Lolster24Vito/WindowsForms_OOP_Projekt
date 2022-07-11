@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WindowsForms_OOP_Projekt.Models
+namespace DAL.Models
 {
     public class UserSettings
     {
@@ -16,7 +16,9 @@ namespace WindowsForms_OOP_Projekt.Models
         public Point Resolution { get; set; }
         public override string ToString()
         {
-            return LanguageCode+ System.Environment.NewLine + (int)ChampionshipGroup;
+            return LanguageCode+ System.Environment.NewLine + (int)ChampionshipGroup
+                + System.Environment.NewLine+IsFullscreen+Environment.NewLine+Resolution.X
+                +Environment.NewLine+Resolution.Y;
         }
         public static UserSettings ParseFromString(string line)
         {
@@ -26,12 +28,15 @@ namespace WindowsForms_OOP_Projekt.Models
             }
             string[] lines = line.Split(new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
-
+           
 
             return new UserSettings
             {
                 LanguageCode = lines[0],
-                ChampionshipGroup = (ChampionshipType)int.Parse(lines[1])
+                ChampionshipGroup = (ChampionshipType)int.Parse(lines[1]),
+                IsFullscreen=bool.Parse(lines[2]),
+                Resolution=new Point(int.Parse(lines[3]),int.Parse(lines[4]))
+
             };
         }
     }

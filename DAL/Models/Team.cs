@@ -10,6 +10,7 @@ namespace DAL.Models
 {
     public class TeamModelVersion
     {
+
         [JsonProperty("id")]
         public long Id { get; set; }
 
@@ -45,6 +46,9 @@ namespace DAL.Models
             var splitString=code.Split('(');
             return splitString[1].Remove(splitString[1].Count()-1,1);
         }
+       
+       
+
         /*
         [JsonProperty("country")]
         public string Country { get; set; }
@@ -64,6 +68,6 @@ namespace DAL.Models
         }*/
     }
 
-   
+
 
 }

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsForms_OOP_Projekt.Models;
+using DAL.Models;
 
 namespace WindowsForms_OOP_Projekt.Forms
 {
@@ -25,12 +25,18 @@ namespace WindowsForms_OOP_Projekt.Forms
         {
             InitializeComponent();
         }
+        private async void LanguageGenderForm_Shown(object sender, EventArgs e)
+        {
+           await LoadUserSettingsAsync();
+
+        }
 
         private async Task LoadUserSettingsAsync()
         {
             string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
 
             settings = UserSettings.ParseFromString(fileLines);
+            //this if is unneeded remove it TODO
             if (needToBeChecked == true)
             {
 
@@ -152,11 +158,7 @@ namespace WindowsForms_OOP_Projekt.Forms
 
 
 
-        private void LanguageGenderForm_Shown(object sender, EventArgs e)
-        {
-            LoadUserSettingsAsync();
 
-        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

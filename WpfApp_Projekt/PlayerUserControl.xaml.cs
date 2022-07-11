@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp_Projekt
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for PlayerUserControl.xaml
     /// </summary>
-    public partial class Settings : Window
+    public partial class PlayerUserControl : UserControl
     {
-        public Settings()
+        public PlayerUserControl()
         {
             InitializeComponent();
         }
