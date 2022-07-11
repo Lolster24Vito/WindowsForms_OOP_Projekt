@@ -16,38 +16,35 @@ namespace DAL
 {
     public class RepositoryJSON:IRepoJSONDeserialize
     {
-        
-       
 
-        
         public Task<List<TeamModelVersion>> GetTeams(string endpoint)
         {
             try
             {
 
-            return Task.Run(() => {
-                var apiClient = new RestClient(endpoint);
-                var apiResult = apiClient.ExecuteAsync<List<TeamModelVersion>>(new RestRequest());
-                    
-                var teamList= JsonConvert.DeserializeObject<List<TeamModelVersion>>(apiResult.Result.Content);
+                return Task.Run(() => {
+                    var apiClient = new RestClient(endpoint);
+                    var apiResult = apiClient.ExecuteAsync<List<TeamModelVersion>>(new RestRequest());
 
-                return teamList;
+                    var teamList = JsonConvert.DeserializeObject<List<TeamModelVersion>>(apiResult.Result.Content);
 
-            });
+                    return teamList;
+
+                });
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
-        public Task<List<MatchesJson>> GetMatches(string endpoint,string fifaCode)
+        public Task<List<MatchesJson>> GetMatches(string endpoint, string fifaCode)
         {
             return Task.Run(() => {
-                var apiClient = new RestClient(endpoint + "/country?fifa_code="+fifaCode);
+                var apiClient = new RestClient(endpoint + "/country?fifa_code=" + fifaCode);
                 var apiResult = apiClient.ExecuteAsync<List<MatchesJson>>(new RestRequest());
                 try
                 {
-                var teamList = JsonConvert.DeserializeObject<List<MatchesJson>>(apiResult.Result.Content);
+                    var teamList = JsonConvert.DeserializeObject<List<MatchesJson>>(apiResult.Result.Content);
                     return teamList;
 
                 }

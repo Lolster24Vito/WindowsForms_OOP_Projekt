@@ -30,6 +30,7 @@ namespace WpfApp_Projekt
        
        
         private string matchesEndpoint = "";
+        private string teamsEndpoint = "";
 
         public MainWindow()
         {
@@ -42,7 +43,7 @@ namespace WpfApp_Projekt
             CheckAndApplySettingsAsync();
             try
             {
-                FillCombobox(matchesEndpoint);
+                FillCombobox(teamsEndpoint);
 
             }
             catch (Exception)
@@ -87,10 +88,7 @@ namespace WpfApp_Projekt
                  counter++;
              }*/
             cbTeamL.Items.Clear();
-            foreach (var team in teams)
-            {
-                cbTeamL.Items.Add(team.ToString());
-            }
+            cbTeamL.ItemsSource = teams;
 
 
         }
@@ -115,10 +113,14 @@ namespace WpfApp_Projekt
             if (settings.ChampionshipGroup == ChampionshipType.Male)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
+                teamsEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
+
             }
             if (settings.ChampionshipGroup == ChampionshipType.Female)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
+                teamsEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
+
             }
 
 

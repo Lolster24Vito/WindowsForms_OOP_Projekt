@@ -37,7 +37,7 @@ namespace WindowsForms_OOP_Projekt
         private List<FootballPlayerUserControl> multipleSelectedFootballPlayers = new List<FootballPlayerUserControl>();
         List<MatchesJson> AllTeamMatches;
 
-
+        private string teamEndpoint = "";
         private string matchesEndpoint = "";
 
         private string favEndPoint = "";
@@ -71,7 +71,7 @@ namespace WindowsForms_OOP_Projekt
                 LoadPlayerPicturesAsync();
                 LoadFavoritePlayersAsync();
                 LoadFavoriteTeam();
-                FillComboBox(matchesEndpoint);
+                FillComboBox(teamEndpoint);
 
 
                 //  FillLabelTest();
@@ -180,10 +180,13 @@ namespace WindowsForms_OOP_Projekt
             if (settings.ChampionshipGroup == ChampionshipType.Male)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
+                teamEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
             }
             if (settings.ChampionshipGroup == ChampionshipType.Female)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
+                teamEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
+
             }
 
 
