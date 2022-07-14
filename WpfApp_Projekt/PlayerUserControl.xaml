@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp_Projekt"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             mc:Ignorable="d" d:DesignWidth="80" Height="75">
+    <Grid UIElement.PreviewMouseDown="Grid_PreviewMouseDown" >
+        <Image Source="Resources/FootballShirt.png"/>
+
+        <Image x:Name="playerPicture" Source="Resources/CroatianFlag.png" Width="33" VerticalAlignment="Top"/>
+
+        <TextBlock x:Name="shirtNumber" Text="23" TextWrapping="WrapWithOverflow" Foreground="PaleVioletRed"  VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBlock x:Name="name" Text="Rebecca QUINN" TextWrapping="WrapWithOverflow"  Foreground="Red"  VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+
     </Grid>
 </UserControl>

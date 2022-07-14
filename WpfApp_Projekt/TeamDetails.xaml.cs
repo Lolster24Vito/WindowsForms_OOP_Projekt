@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,21 @@ namespace WpfApp_Projekt
     /// </summary>
     public partial class TeamDetails : Window
     {
-        public TeamDetails()
+        public List<MatchesJson> TeamMatches { get; set; }
+        public Team Team { get; set; }
+        public TeamDetails(List<MatchesJson> teamMatches,Team team)
         {
             InitializeComponent();
+            TeamMatches = teamMatches;
+            Team = team;
+            LoadInfo();
+        }
+
+        private void LoadInfo()
+        {
+            if (TeamMatches == null) return;
+
+            
         }
     }
 }

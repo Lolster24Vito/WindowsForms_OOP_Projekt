@@ -11,10 +11,16 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Orientation" Value="Vertical"/>
         </Style>
+        <Style TargetType="Button">
+            
+        </Style>
+        
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="55*"></ColumnDefinition>
             <ColumnDefinition Width="304*"></ColumnDefinition>
             <ColumnDefinition Width="94*"></ColumnDefinition>
             <ColumnDefinition Width="304*"></ColumnDefinition>
@@ -25,25 +31,35 @@
             <RowDefinition Height="8*"></RowDefinition>
         </Grid.RowDefinitions>
 
-       
+
 
         <Button x:Name="btnSettings" Click="btnSettings_Click" >
             <Image Source="Resources\SettingsIcon.png"></Image>
         </Button>
-        <ComboBox x:Name="cbTeamL" VerticalAlignment="Center" Grid.Column="1"  
-                  FontSize="15"  Margin="10,0,10,0" Height="36">
+        <ComboBox x:Name="cbTeamL" VerticalAlignment="Center" Grid.Column="2"  
+                  FontSize="15"  Margin="10,0,10,0" Height="36" SelectionChanged="cbTeamL_SelectionChanged">
+        </ComboBox>
+        <Button x:Name="lTeamDetails"  Grid.Column="1" Margin="10,0,0,0" Click="lTeamDetails_Click" >
+            <TextBlock TextWrapping="Wrap" Text="Team details"/>
+        </Button>
+
+        <Label x:Name="lblMatchResult" Content="0 - 0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />
+
+        <ComboBox x:Name="cbTeamR" VerticalAlignment="Center" Grid.Column="4"  
+                  FontSize="15" Grid.ColumnSpan="2" Height="36" Margin="0,0,50,0" IsEnabled="False" SelectionChanged="cbTeamR_SelectionChanged" >
 
         </ComboBox>
-        <Label Content="3-0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Height="40" Width="42"/>
+        <Button x:Name="rTeamDetails" Grid.Column="7"  Click="rTeamDetails_Click" >
+            <TextBlock TextWrapping="Wrap" Text="Team details"/>
 
-        <ComboBox x:Name="cbTeamR" VerticalAlignment="Center" Grid.Column="3"  
-                  FontSize="15" Grid.ColumnSpan="2" Height="36" Margin="0,0,50,0" IsEnabled="False" >
+        </Button>
 
-        </ComboBox>
-        <Image Source="Resources\soccer-field.jpg" Grid.ColumnSpan="5" Stretch="Fill" Margin="50,48,50,0" Grid.RowSpan="2"/>
+        <Image Source="Resources\soccer-field.jpg" Grid.ColumnSpan="7" Stretch="Fill" Margin="50,48,50,0" Grid.RowSpan="2"/>
+        <ProgressBar Name="MyProgressBar" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center"
+                     VerticalAlignment="Center"  Width="150" Height="20" IsIndeterminate="True" Visibility="Collapsed"/>
        
         
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -53,21 +69,22 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
             <StackPanel x:Name="spGoalieL" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+            
             <StackPanel x:Name="spDefenderL" Grid.Column="1" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+            
             <StackPanel x:Name="spMidfieldL" Grid.Column="2" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+            
             <StackPanel x:Name="spForwardL" Grid.Column="3" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
 
         </Grid>
-<Grid Grid.Column="3" Grid.Row="1">
+        
+<Grid Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -79,16 +96,15 @@
             </Grid.RowDefinitions>
 
             <StackPanel x:Name="spForwardR" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+    
             <StackPanel x:Name="spMidfieldR" Grid.Column="1" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+    
             <StackPanel x:Name="spDefenderR" Grid.Column="2" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
+    
             <StackPanel x:Name="spGoalieR" Grid.Column="3" >
-                <Image Source="Resources\CroatianFlag.png"/>
             </StackPanel>
 
             
@@ -97,4 +113,5 @@
 
 
     </Grid>
+
 </Window>

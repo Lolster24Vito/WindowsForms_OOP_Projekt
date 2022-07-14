@@ -32,6 +32,23 @@ namespace WpfApp_Projekt
         private string matchesEndpoint = "";
         private string teamsEndpoint = "";
 
+        private string selectedCountryCode;
+        private string selectedEnemyCountryCode;
+
+
+
+        private List<MatchesJson> AllTeamMatches;
+        private List<Team> TeamPlayed=new List<Team>();
+        private List<Player> playersWithPictures = new List<Player>();
+        private List<Player> playersLeft = new List<Player>();
+        private List<Player> playersRight = new List<Player>();
+
+
+
+
+        private MatchesJson selectedMatch;
+        private List<TeamEvent> lTeamEvents;
+        private List<TeamEvent> rTeamEvents;
         public MainWindow()
         {
             InitializeComponent();
@@ -43,7 +60,9 @@ namespace WpfApp_Projekt
             CheckAndApplySettingsAsync();
             try
             {
-                FillCombobox(teamsEndpoint);
+                LoadPlayerPicturesAsync();
+                LoadFavoriteTeam();
+                FillLeftCombobox(teamsEndpoint);
 
             }
             catch (Exception)
@@ -51,32 +70,19 @@ namespace WpfApp_Projekt
 
                 throw;
             }
-            /*
-
-
-
-            if (settings.ChampionshipGroup == ChampionshipType.Male)
-            {
-                endpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
-                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
-
-
-            }
-            if (settings.ChampionshipGroup == ChampionshipType.Female)
-            {
-                endpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
-                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
-
-
-            }
-            */
+           
 
         }
-
-        private async void FillCombobox(string endpoint)
+        private void SaveFavoriteTeam(string selectedCountryCode)
         {
+            FileRepo.SaveToFile(selectedCountryCode, DAL.Constants.ApiConstants.USER_FAVORITE_TEAM);
+        }
+
+        private async void FillLeftCombobox(string endpoint)
+        {
+            MyProgressBar.Visibility = Visibility.Visible;
             List<TeamModelVersion> teams = await repo.GetTeams(endpoint);
-            /* int selectedIndexFromFile = 0;
+             int selectedIndexFromFile = 0;
              int counter = 0;
              foreach (var t in teams)
              {
@@ -86,10 +92,28 @@ namespace WpfApp_Projekt
                      break;
                  }
                  counter++;
-             }*/
+             }
             cbTeamL.Items.Clear();
             cbTeamL.ItemsSource = teams;
+            cbTeamL.SelectedIndex = selectedIndexFromFile;
 
+            MyProgressBar.Visibility = Visibility.Collapsed;
+
+
+
+        }
+        private async void LoadFavoriteTeam()
+        {
+
+            try
+            {
+                selectedCountryCode = await FileRepo.ReadFromFile(DAL.Constants.ApiConstants.USER_FAVORITE_TEAM);
+                selectedCountryCode = selectedCountryCode.Trim();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
         private async void CheckAndApplySettingsAsync()
@@ -129,6 +153,225 @@ namespace WpfApp_Projekt
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
             new UserSettingsWindow().ShowDialog();
+        }
+
+        private void cbTeamL_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //  cbTeamR.SelectedIndex = -1;
+            selectedCountryCode = ((TeamModelVersion) cbTeamL.SelectedValue).FifaCode.Trim();
+            cbTeamR.ItemsSource = null;
+            cbTeamR.Items.Clear();
+            lblMatchResult.Content = "0 - 0";
+            try
+            {
+                SaveFavoriteTeam(selectedCountryCode);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            ClearPlayersPanel();
+
+            fillRightComboBox();
+        }
+
+        private async void fillRightComboBox()
+        {
+
+            MyProgressBar.Visibility = Visibility.Visible;
+            AllTeamMatches = await repo.GetMatches(matchesEndpoint, selectedCountryCode);
+
+            if (AllTeamMatches == null || AllTeamMatches[0] == null)
+            {
+
+                MyProgressBar.Visibility = Visibility.Collapsed;
+                MessageBox.Show("An error occuered cannot find matches of country");
+
+                return;
+            }
+            TeamPlayed.Clear();
+            foreach (var match in AllTeamMatches)
+            {
+                if(match.AwayTeam.Code!= selectedCountryCode)
+                {
+                    TeamPlayed.Add(match.AwayTeam);
+                }
+                if (match.HomeTeam.Code != selectedCountryCode)
+                {
+                    TeamPlayed.Add(match.HomeTeam);
+
+                }
+            }
+            cbTeamR.IsEnabled = true;
+            cbTeamR.ItemsSource = TeamPlayed;
+            MyProgressBar.Visibility = Visibility.Collapsed;
+
+        }
+
+        private void cbTeamR_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbTeamR.SelectedValue == null) return;
+
+            selectedEnemyCountryCode = ((Team)cbTeamR.SelectedValue).Code;
+
+            selectedMatch=AllTeamMatches.First(m=>m.AwayTeam.Code==selectedEnemyCountryCode||m.HomeTeam.Code==selectedEnemyCountryCode);
+            LoadPlayers();
+            long goalsL;
+            long goalsR;
+            if (selectedMatch.HomeTeam.Code == selectedCountryCode)
+            {
+                goalsL = selectedMatch.HomeTeam.Goals;
+                goalsR = selectedMatch.AwayTeam.Goals;
+            }
+            else
+            {
+                goalsR = selectedMatch.HomeTeam.Goals;
+                goalsL = selectedMatch.AwayTeam.Goals;
+            }
+            lblMatchResult.Content = $"{goalsL} - {goalsR}";
+            //GET enemy players
+            //get hometeam players
+        }
+
+        private void LoadPlayers()
+        {
+            List<StartingEleven> leftPlayers=new List<StartingEleven>();
+            List<StartingEleven> rightPlayers=new List<StartingEleven>();
+            if (selectedMatch.HomeTeam.Code == selectedCountryCode)
+            {
+                leftPlayers=selectedMatch.HomeTeamStatistics.StartingEleven;
+                lTeamEvents = selectedMatch.HomeTeamEvents;
+                rightPlayers = selectedMatch.AwayTeamStatistics.StartingEleven;
+                rTeamEvents= selectedMatch.AwayTeamEvents;
+            }
+            if(selectedMatch.AwayTeam.Code == selectedCountryCode)
+            {
+                leftPlayers = selectedMatch.AwayTeamStatistics.StartingEleven;
+                lTeamEvents= selectedMatch.AwayTeamEvents;
+                rightPlayers = selectedMatch.HomeTeamStatistics.StartingEleven;
+                rTeamEvents = selectedMatch.HomeTeamEvents;
+            }
+
+            playersLeft.Clear();
+            playersRight.Clear();
+            //foreach for pictures
+            foreach (StartingEleven player in leftPlayers)
+            {
+                Player p = Player.LoadParameters(player);
+                foreach (var pl in playersWithPictures)
+                {
+                    if (p == pl)
+                    {
+                        p.PicturePath = pl.PicturePath;
+                    }
+                }
+                playersLeft.Add(p);
+            }
+            //foreach for pictures
+            foreach (StartingEleven player in rightPlayers)
+            {
+                Player p = Player.LoadParameters(player);
+                foreach (var pl in playersWithPictures)
+                {
+                    if (p == pl)
+                    {
+                        p.PicturePath = pl.PicturePath;
+                    }
+                }
+                playersRight.Add(p);
+            }
+            ClearPlayersPanel();
+           // int lHeight=
+            foreach (var lPlayer in playersLeft)
+            {
+                SetLeftPlayerToPanel(lPlayer);
+            }
+            foreach (var rPlayer in playersRight)
+            {
+                SetRightPlayerToPanel(rPlayer);
+            }
+
+        }
+        private async Task LoadPlayerPicturesAsync()
+        {
+            List<string> fileLines = await FileRepo.ReadFromFileList(DAL.Constants.ApiConstants.USER_PICTURES_PATH);
+            foreach (var line in fileLines)
+            {
+                playersWithPictures.Add(Player.ParseFromString(line));
+            }
+
+            // settings = UserSettings.ParseFromString(fileLines);
+
+
+        }
+
+        private void ClearPlayersPanel()
+        {
+            spDefenderL.Children.Clear();
+            spDefenderR.Children.Clear();
+            spForwardL.Children.Clear();
+            spForwardR.Children.Clear();
+            spGoalieL.Children.Clear();
+            spGoalieR.Children.Clear();
+            spMidfieldL.Children.Clear();
+            spMidfieldR.Children.Clear();
+        }
+
+        private void SetLeftPlayerToPanel(Player player)
+        {
+            PlayerUserControl playerUserControl = new PlayerUserControl(player);
+            playerUserControl.MatchEvents = lTeamEvents;
+            switch (player.Position)
+            {
+                case Position.Defender:
+                    spDefenderL.Children.Add(playerUserControl);
+                    break;
+                case Position.Forward:
+                    spForwardL.Children.Add(playerUserControl);
+                    break;
+                case Position.Goalie:
+                    spGoalieL.Children.Add(playerUserControl);
+                    break;
+                case Position.Midfield:
+                    spMidfieldL.Children.Add(playerUserControl);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void SetRightPlayerToPanel(Player player)
+        {
+            PlayerUserControl playerUserControl = new PlayerUserControl(player);
+            playerUserControl.MatchEvents = rTeamEvents;
+            switch (player.Position)
+            {
+                case Position.Defender:
+                    spDefenderR.Children.Add(playerUserControl);
+                    break;
+                case Position.Forward:
+                    spForwardR.Children.Add(playerUserControl);
+                    break;
+                case Position.Goalie:
+                    spGoalieR.Children.Add(playerUserControl);
+                    break;
+                case Position.Midfield:
+                    spMidfieldR.Children.Add(playerUserControl);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void lTeamDetails_Click(object sender, RoutedEventArgs e)
+        {
+           // new TeamDetails(teamMatches,)
+        }
+
+        private void rTeamDetails_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

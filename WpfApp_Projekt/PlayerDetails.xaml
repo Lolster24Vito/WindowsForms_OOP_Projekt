@@ -5,8 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_Projekt"
         mc:Ignorable="d"
-        Title="PlayerDetails" Height="450" Width="800">
+        Title="PlayerDetails" Height="450" Width="450">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:3" FillBehavior="HoldEnd" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+   
     <Grid>
-        
+
+        <Grid.Resources>
+
+
+            <Style x:Key="valueNameStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+
+            </Style>
+            <Style x:Key="valueParameterStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+
+                <Setter Property="Margin" Value="33,0"></Setter>
+                        <Setter Property="TextAlignment" Value="Right"/>
+
+                    </Style>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+        <Image x:Name="playerPicture" Source="Resources/profile icon.jpg" Grid.RowSpan="3"></Image>
+
+            <TextBlock Text="Ime:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="1"></TextBlock>
+            <TextBlock x:Name="lblName" Text="IME:"  Style="{StaticResource ResourceKey=valueParameterStyle}" Grid.Column="2"></TextBlock>
+
+
+        <TextBlock Text="Broj:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="1" Grid.Row="1"></TextBlock>
+        <TextBlock x:Name="lblShirtNumber" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="2" Grid.Row="1"></TextBlock>
+
+        <TextBlock Text="Pozicija:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="1" Grid.Row="2"></TextBlock>
+        <TextBlock x:Name="lblPosition" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="2" Grid.Row="2"></TextBlock>
+
+        <TextBlock Text="Broj zabijenih golova u toj utakmici:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"></TextBlock>
+        <TextBlock x:Name="lblNumberOfGoals" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="3" Grid.Row="4"></TextBlock>
+
+        <TextBlock Text="Broj žutih kartona u toj utakmici:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5"></TextBlock>
+        <TextBlock x:Name="lblNumberOfYellowCards" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="3" Grid.Row="5"></TextBlock>
+
+        <TextBlock x:Name="lblCaptain" Text="Kapetan" FontSize="22" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3" ></TextBlock>
+
     </Grid>
 </Window>

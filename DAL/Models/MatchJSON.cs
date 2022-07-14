@@ -93,6 +93,11 @@ namespace DAL.Models
 
         [JsonProperty("penalties")]
         public long Penalties { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Country} ({Code})";
+        }
     }
 
     public partial class TeamEvent

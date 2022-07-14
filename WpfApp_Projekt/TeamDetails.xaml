@@ -5,8 +5,93 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp_Projekt"
         mc:Ignorable="d"
-        Title="TeamDetails" Height="450" Width="800">
+        Title="TeamDetails" Height="450" Width="450">
+
     <Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Window.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(RotateTransform.Angle)" From="0" To="360" Duration="0:0:3" FillBehavior="HoldEnd" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
         
+        <Grid.Resources>
+
+
+            <Style x:Key="valueNameStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="TextAlignment" Value="Right"/>
+
+            </Style>
+            <Style x:Key="valueParameterStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+
+                <Setter Property="Margin" Value="33,0"></Setter>
+                <Setter Property="TextAlignment" Value="Right"/>
+
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RenderTransform>
+            <RotateTransform Angle="0"></RotateTransform>
+        </Grid.RenderTransform>
+        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Naziv:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="0"></TextBlock>
+        <TextBlock x:Name="lblName" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="0"></TextBlock>
+
+        <TextBlock Text="FIFA kod:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="1"></TextBlock>
+        <TextBlock x:Name="lblFifaCode" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="1"></TextBlock>
+
+        <TextBlock Text="Broj odigranih utakmica:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="2"></TextBlock>
+        <TextBlock x:Name="lblNumberOfMatches" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="2"></TextBlock>
+
+        <TextBlock Text="Broj pobjeda:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="3"></TextBlock>
+        <TextBlock x:Name="lblNumberOfWins" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="3"></TextBlock>
+
+        <TextBlock Text="Broj poraza:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="4"></TextBlock>
+        <TextBlock x:Name="lblNumberOfLooses" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="4"></TextBlock>
+
+
+        <TextBlock Text="Broj neriješenih:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="5"></TextBlock>
+        <TextBlock x:Name="lblNumberOfDraws" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="5"></TextBlock>
+
+        <TextBlock Text="Broj zabijenih golova:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="6"></TextBlock>
+        <TextBlock x:Name="lblScoredGoals" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="6"></TextBlock>
+
+
+        <TextBlock Text="Broj primljenih golova:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="7"></TextBlock>
+        <TextBlock x:Name="lblTakenGoals" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="7"></TextBlock>
+
+        <TextBlock Text="Razlika golova:" Style="{StaticResource ResourceKey=valueNameStyle}" Grid.Column="0" Grid.Row="8"></TextBlock>
+        <TextBlock x:Name="lblDifGoals" Text="0"  Style="{StaticResource ResourceKey=valueParameterStyle}"  Grid.Column="1" Grid.Row="8"></TextBlock>
+
     </Grid>
 </Window>
