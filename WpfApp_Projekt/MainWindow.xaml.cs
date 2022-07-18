@@ -3,8 +3,11 @@ using DAL.Models;
 using DAL.REPO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,13 +54,24 @@ namespace WpfApp_Projekt
         private List<TeamEvent> rTeamEvents;
         public MainWindow()
         {
+            CheckAndApplySettingsAsync();
+            SetCulture(settings.LanguageCode);
             InitializeComponent();
             Init();
         }
 
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (MessageBox.Show("Close Application?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            base.OnClosing(e);
+        }
+
         private void Init()
         {
-            CheckAndApplySettingsAsync();
             try
             {
                 LoadPlayerPicturesAsync();
@@ -120,6 +134,12 @@ namespace WpfApp_Projekt
         {
 
             string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
+            UserSettings oldSettings=null;
+            if (settings != null)
+            {
+                oldSettings = settings;
+            }
+            
             settings = UserSettings.ParseFromString(fileLines);
 
 
@@ -146,13 +166,28 @@ namespace WpfApp_Projekt
                 teamsEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
 
             }
+            //SetCulture(settings.LanguageCode);
+            if (oldSettings!=null&&settings.LanguageCode != oldSettings.LanguageCode)
+            {
+                lTeamDetailsButtonText.Text = Properties.Resources.TeamDetails;
+                rTeamDetailsButtonText.Text = Properties.Resources.TeamDetails;
 
+            }
 
+        }
+        private void SetCulture(string language)
+        {
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
+
+            // UpdateUIInitializeComponent(language);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
             new UserSettingsWindow().ShowDialog();
+            CheckAndApplySettingsAsync();
         }
 
         private void cbTeamL_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -366,11 +401,26 @@ namespace WpfApp_Projekt
 
         private void lTeamDetails_Click(object sender, RoutedEventArgs e)
         {
-           // new TeamDetails(teamMatches,)
+            if (cbTeamL.SelectedValue == null) return;
+            TeamModelVersion selectedTeam = (TeamModelVersion)cbTeamL.SelectedValue;
+
+            new TeamDetails(AllTeamMatches, selectedTeam).ShowDialog();
+            //        ((TeamModelVersion) cbTeamL.SelectedValue).FifaCode.Trim();
+
         }
 
-        private void rTeamDetails_Click(object sender, RoutedEventArgs e)
+        private async void rTeamDetails_Click(object sender, RoutedEventArgs e)
         {
+            if (cbTeamR.SelectedValue == null) return;
+
+            MyProgressBar.Visibility = Visibility.Visible;
+
+            Team selectedTeam = (Team)cbTeamR.SelectedValue;
+            var enemyTeamMatches = await repo.GetMatches(matchesEndpoint, selectedEnemyCountryCode);
+            MyProgressBar.Visibility = Visibility.Collapsed;
+
+            new TeamDetails(enemyTeamMatches, selectedTeam).ShowDialog();
+
 
         }
     }

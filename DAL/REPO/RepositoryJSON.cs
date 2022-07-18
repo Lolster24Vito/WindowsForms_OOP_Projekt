@@ -70,6 +70,13 @@ namespace DAL
             });
         }
 
+        public Task<TeamModelVersion> GetTeam(string endpoint, string fifaCode)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
 
         /*
          * public Task<List<Team>> GetTeams()

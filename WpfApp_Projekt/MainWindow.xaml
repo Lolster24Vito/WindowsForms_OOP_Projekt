@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="clr-namespace:WpfApp_Projekt.Properties"
+
         xmlns:local="clr-namespace:WpfApp_Projekt"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -24,6 +26,7 @@
             <ColumnDefinition Width="304*"></ColumnDefinition>
             <ColumnDefinition Width="94*"></ColumnDefinition>
             <ColumnDefinition Width="304*"></ColumnDefinition>
+            <ColumnDefinition Width="55*"></ColumnDefinition>
             <ColumnDefinition Width="50*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -40,7 +43,7 @@
                   FontSize="15"  Margin="10,0,10,0" Height="36" SelectionChanged="cbTeamL_SelectionChanged">
         </ComboBox>
         <Button x:Name="lTeamDetails"  Grid.Column="1" Margin="10,0,0,0" Click="lTeamDetails_Click" >
-            <TextBlock TextWrapping="Wrap" Text="Team details"/>
+            <TextBlock x:Name="lTeamDetailsButtonText" TextWrapping="Wrap" Text="{x:Static lang:Resources.TeamDetails}" FontSize="10"/>
         </Button>
 
         <Label x:Name="lblMatchResult" Content="0 - 0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />
@@ -49,8 +52,8 @@
                   FontSize="15" Grid.ColumnSpan="2" Height="36" Margin="0,0,50,0" IsEnabled="False" SelectionChanged="cbTeamR_SelectionChanged" >
 
         </ComboBox>
-        <Button x:Name="rTeamDetails" Grid.Column="7"  Click="rTeamDetails_Click" >
-            <TextBlock TextWrapping="Wrap" Text="Team details"/>
+        <Button x:Name="rTeamDetails" Grid.Column="5"  Click="rTeamDetails_Click" Margin="10,0,0,0" >
+            <TextBlock  x:Name="rTeamDetailsButtonText" TextWrapping="Wrap" Text="{x:Static lang:Resources.TeamDetails}" FontSize="10"/>
 
         </Button>
 
@@ -84,7 +87,7 @@
 
         </Grid>
         
-<Grid Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2">
+<Grid Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />

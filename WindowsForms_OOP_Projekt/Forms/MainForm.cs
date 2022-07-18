@@ -14,6 +14,8 @@ using DAL.REPO;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing.Printing;
+using System.Globalization;
+using System.Threading;
 
 namespace WindowsForms_OOP_Projekt
 {
@@ -47,6 +49,7 @@ namespace WindowsForms_OOP_Projekt
 
         public MainForm()
         {
+            CheckAndApplySettingsAsync();
             InitializeComponent();
             Init();
 
@@ -60,7 +63,6 @@ namespace WindowsForms_OOP_Projekt
 
 
 
-            CheckAndApplySettingsAsync();
 
 
 
@@ -188,11 +190,20 @@ namespace WindowsForms_OOP_Projekt
                 teamEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
 
             }
+            SetCulture(settings.LanguageCode);
 
 
 
         }
+        private void SetCulture(string language)
+        {
+            var culture = new CultureInfo(language);
 
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+
+            // UpdateUIInitializeComponent(language);
+        }
 
 
         private void OpenSettingsForm()
