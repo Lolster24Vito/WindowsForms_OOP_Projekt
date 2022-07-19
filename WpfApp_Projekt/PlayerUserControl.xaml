@@ -4,14 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp_Projekt"
-             mc:Ignorable="d" d:DesignWidth="80" Height="75">
-    <Grid UIElement.PreviewMouseDown="Grid_PreviewMouseDown" >
-        <Image Source="Resources/FootballShirt.png"/>
+             mc:Ignorable="d" d:DesignWidth="60" Height="60">
+    <Grid UIElement.PreviewMouseDown="Grid_PreviewMouseDown" Margin="5,0" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.5*" ></RowDefinition>
+        </Grid.RowDefinitions>
 
-        <Image x:Name="playerPicture" Source="Resources/CroatianFlag.png" Width="33" VerticalAlignment="Top"/>
 
-        <TextBlock x:Name="shirtNumber" Text="23" TextWrapping="WrapWithOverflow" Foreground="PaleVioletRed"  VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-        <TextBlock x:Name="name" Text="Rebecca QUINN" TextWrapping="WrapWithOverflow"  Foreground="Red"  VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+            <Image Source="Resources/FootballShirt.png" Grid.RowSpan="2"/>
+
+        <Image x:Name="playerPicture" Source="Resources/CroatianFlag.png" VerticalAlignment="Top"/>
+
+        <TextBlock x:Name="shirtNumber" Text="23" TextWrapping="WrapWithOverflow" Foreground="PaleVioletRed"  VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="1"></TextBlock>
+        <Viewbox  Grid.Row="2" >
+            
+        <TextBlock  x:Name="name" Text="Rebecca QUINN" TextWrapping="Wrap"  Foreground="Red" Background="Wheat"  VerticalAlignment="Bottom" HorizontalAlignment="Center"></TextBlock>
+        </Viewbox>
 
     </Grid>
 </UserControl>

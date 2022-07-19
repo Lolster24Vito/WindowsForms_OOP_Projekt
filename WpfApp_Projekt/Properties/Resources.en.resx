@@ -118,87 +118,87 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Broj" xml:space="preserve">
-    <value>Broj:</value>
+    <value>Number:</value>
   </data>
   <data name="BrojZabGol" xml:space="preserve">
-    <value>Broj zabijenih golova u toj utakmici:</value>
+    <value>Number of goals scored in that match:</value>
   </data>
   <data name="BrojŽutih" xml:space="preserve">
-    <value>Broj žutih kartona u toj utakmici:</value>
+    <value>Number of yellow cards in that match:</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Odustani</value>
+    <value>Cancel</value>
   </data>
   <data name="ChooseChampionship" xml:space="preserve">
-    <value>Odaberite prvenstvo:</value>
+    <value>Choose a championship:</value>
   </data>
   <data name="ChooseLanguage" xml:space="preserve">
-    <value>Odaberite jezik:</value>
+    <value>Choose a language</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Potvrdi</value>
+    <value>Confirm</value>
   </data>
   <data name="Croatian" xml:space="preserve">
-    <value>Hrvatski</value>
+    <value>Croatian</value>
   </data>
   <data name="DifGoals" xml:space="preserve">
-    <value>Razlika golova:</value>
+    <value>Goal difference:</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>Engleski</value>
+    <value>English</value>
   </data>
   <data name="FifaCode" xml:space="preserve">
-    <value>Fifa kod</value>
+    <value>Fifa code:</value>
   </data>
   <data name="Fullscreen" xml:space="preserve">
-    <value>Cijeli zaslon način rada</value>
+    <value>Fullscreen</value>
   </data>
   <data name="Ime" xml:space="preserve">
-    <value>Ime:</value>
+    <value>Name:</value>
   </data>
   <data name="Kapetan" xml:space="preserve">
-    <value>Kapetan</value>
+    <value>Captain</value>
   </data>
   <data name="ManChamp" xml:space="preserve">
-    <value>Muško prvenstvo</value>
+    <value>Men's Championship</value>
   </data>
   <data name="NumGoals" xml:space="preserve">
-    <value>Broj zabijenih golova:</value>
+    <value>Number of goals scored:</value>
   </data>
   <data name="NumGoalsTaken" xml:space="preserve">
-    <value>Broj primljenih golova:</value>
+    <value>Number of goals conceded:</value>
   </data>
   <data name="NumLoses" xml:space="preserve">
-    <value>Broj poraza:</value>
+    <value>Number of defeats:</value>
   </data>
   <data name="NumMatchesPlayed" xml:space="preserve">
-    <value>Broj odigranih utakmica:</value>
+    <value>Number of matches played:</value>
   </data>
   <data name="NumTies" xml:space="preserve">
-    <value>Broj neriješenih:</value>
+    <value>Number of ties:</value>
   </data>
   <data name="NumWins" xml:space="preserve">
-    <value>Broj pobjeda:</value>
+    <value>Number of wins:</value>
   </data>
   <data name="Pozicija" xml:space="preserve">
-    <value>Pozicija:</value>
+    <value>Position:</value>
   </data>
   <data name="SettingsDisplayMode" xml:space="preserve">
-    <value>Odaberite način prikaza:</value>
+    <value>Choose a display mode:</value>
   </data>
   <data name="SettingsResolution" xml:space="preserve">
-    <value>Rezolucija:</value>
+    <value>Resolution:</value>
   </data>
   <data name="TeamDetails" xml:space="preserve">
-    <value>Tim detalji</value>
+    <value>Team details</value>
   </data>
   <data name="TeamName" xml:space="preserve">
-    <value>Naziv:</value>
+    <value>Name:</value>
   </data>
   <data name="WindowMode" xml:space="preserve">
-    <value>Prozorski način rada</value>
+    <value>Windowed</value>
   </data>
   <data name="WomanChamp" xml:space="preserve">
-    <value>Žensko prvenstvo</value>
+    <value>Women's Championship</value>
   </data>
 </root>
