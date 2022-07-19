@@ -47,30 +47,36 @@ namespace WindowsForms_OOP_Projekt.Forms
             }
             else
             {
-                if (settings.LanguageCode == HR)
-                {
-                    rbCroatian.Checked = true; 
-                }
-                if (settings.LanguageCode==EN)
-                {
-                    rbEnglish.Checked = true;
-                }
-                if (settings.ChampionshipGroup == ChampionshipType.Male)
-                {
-                    cbChampionship.SelectedIndex = 1;
-                }
-                if (settings.ChampionshipGroup == ChampionshipType.Female)
-                {
-                    cbChampionship.SelectedIndex = 0;
-
-
-                }
+                SetUIForSettings();
             }
 
             needToBeChecked = false;
 
 
 
+        }
+
+        private void SetUIForSettings()
+        {
+            if (settings == null) return;
+            if (settings.LanguageCode == HR)
+            {
+                rbCroatian.Checked = true;
+            }
+            if (settings.LanguageCode == EN)
+            {
+                rbEnglish.Checked = true;
+            }
+            if (settings.ChampionshipGroup == ChampionshipType.Male)
+            {
+                cbChampionship.SelectedIndex = 1;
+            }
+            if (settings.ChampionshipGroup == ChampionshipType.Female)
+            {
+                cbChampionship.SelectedIndex = 0;
+
+
+            }
         }
 
         private void SetCulture(string language)
@@ -80,12 +86,9 @@ namespace WindowsForms_OOP_Projekt.Forms
             Thread.CurrentThread.CurrentUICulture = culture;
             Thread.CurrentThread.CurrentCulture = culture;
 
-           // UpdateUIInitializeComponent(language);
         }
 
 
-
-      
 
         private void cbChampionship_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -107,17 +110,18 @@ namespace WindowsForms_OOP_Projekt.Forms
 
         private void CheckCheckedRadioButtons()
         {
+
             if (rbCroatian.Checked)
             {
-                SetCulture(HR);
                 settings.LanguageCode = HR;
+                SetCulture(HR);
 
 
             }
             if (rbEnglish.Checked)
             {
-                SetCulture(EN);
                 settings.LanguageCode = EN;
+                SetCulture(EN);
 
             }
         }
