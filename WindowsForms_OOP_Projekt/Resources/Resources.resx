@@ -117,4 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MatchesDataGridViewAwayTeam" xml:space="preserve">
+    <value>Gostujući tim</value>
+  </data>
+  <data name="MatchesDataGridViewHomeTeam" xml:space="preserve">
+    <value>Domaći tim</value>
+  </data>
+  <data name="MatchesDataGridViewLocation" xml:space="preserve">
+    <value>Lokacija</value>
+  </data>
+  <data name="MatchesDataGridViewVisitors" xml:space="preserve">
+    <value>Broj posjetitelja</value>
+  </data>
+  <data name="PlayerDataGridViewImage" xml:space="preserve">
+    <value>Slika</value>
+  </data>
+  <data name="PlayerDataGridViewName" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="PlayerDataGridViewNumGoals" xml:space="preserve">
+    <value>Broj golova</value>
+  </data>
+  <data name="PlayerDataGridViewNumRed" xml:space="preserve">
+    <value>Broj crvenih kartona</value>
+  </data>
+  <data name="PlayerDataGridViewNumYellow" xml:space="preserve">
+    <value>Broj žutih kartona</value>
+  </data>
 </root>

@@ -16,11 +16,15 @@ using System.IO;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Threading;
+using System.Resources;
 
 namespace WindowsForms_OOP_Projekt
 {
     public partial class MainForm : Form
     {
+        //VITO TODO 
+        //REMEMBER PICKED MAN AND WOMAN PICK and when changing in settings change back
+
         IRepoJSONDeserialize repo = RepositoryFactory.GetRepository();
         Dictionary<string, Team> teams = new Dictionary<string, Team>();
 
@@ -31,6 +35,10 @@ namespace WindowsForms_OOP_Projekt
         private const string USER_FAVORITE_FEMALE_PLAYERS = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
         private const string USER_PICTURES_PATH = DAL.Constants.ApiConstants.USER_PICTURES_PATH;
         private const string USER_FAVORITE_TEAM = DAL.Constants.ApiConstants.USER_FAVORITE_TEAM;
+
+
+        private const string CroatianResources = @"..\..\Resources\Resources.resx";
+        private const string EnglishResources = @"..\..\Resources\Resources.en.resx";
 
         private UserSettings settings;
         private List<Player> players = new List<Player>();
@@ -50,6 +58,7 @@ namespace WindowsForms_OOP_Projekt
         public MainForm()
         {
             CheckAndApplySettingsAsync();
+            SetCulture(settings.LanguageCode);
             InitializeComponent();
             Init();
 
@@ -66,7 +75,7 @@ namespace WindowsForms_OOP_Projekt
 
 
 
-           
+
 
             try
             {
@@ -183,14 +192,17 @@ namespace WindowsForms_OOP_Projekt
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
                 teamEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
+                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
             }
             if (settings.ChampionshipGroup == ChampionshipType.Female)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
                 teamEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
+                favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
+
 
             }
-            SetCulture(settings.LanguageCode);
+            //SetCulture(settings.LanguageCode);
 
 
 
@@ -210,6 +222,13 @@ namespace WindowsForms_OOP_Projekt
         {
             var newForm = new LanguageGenderForm();
             newForm.ShowDialog();
+        }
+        private void UpdateUIInitializeComponent()
+        {
+            this.Controls.Clear();
+            InitializeComponent();
+            //TODO VITO REPLACE INIT with specific changes
+            Init();
         }
 
         internal void DeselectMultipleFootballPlayers()
@@ -318,14 +337,51 @@ namespace WindowsForms_OOP_Projekt
         private void LoadTournamentToDataGridView()
         {
             MatchesDataGridView.Rows.Clear();
+            if (settings != null)
+            {
+                LocalizeTournamentGridViewColumns();
+            }
             AllTeamMatches.ForEach(match => MatchesDataGridView.Rows.Add(match.Location, match.HomeTeamCountry, match.AwayTeamCountry, match.Attendance));
             MatchesDataGridView.Refresh();
+        }
+
+        private void LocalizeTournamentGridViewColumns()
+        {
+            if (settings.LanguageCode == "hr")
+            {
+
+                using (ResXResourceSet resxSet = new ResXResourceSet(CroatianResources))
+                {
+                    MatchesDataGridView.Columns[0].HeaderText = resxSet.GetString("MatchesDataGridViewLocation");
+                    MatchesDataGridView.Columns[1].HeaderText = resxSet.GetString("MatchesDataGridViewHomeTeam");
+                    MatchesDataGridView.Columns[2].HeaderText = resxSet.GetString("MatchesDataGridViewAwayTeam");
+                    MatchesDataGridView.Columns[3].HeaderText = resxSet.GetString("MatchesDataGridViewVisitors");
+
+                }
+            }
+            if (settings.LanguageCode == "en")
+            {
+                using (ResXResourceSet resxSet = new ResXResourceSet(EnglishResources))
+                {
+                    MatchesDataGridView.Columns[0].HeaderText = resxSet.GetString("MatchesDataGridViewLocation");
+                    MatchesDataGridView.Columns[1].HeaderText = resxSet.GetString("MatchesDataGridViewHomeTeam");
+                    MatchesDataGridView.Columns[2].HeaderText = resxSet.GetString("MatchesDataGridViewAwayTeam");
+                    MatchesDataGridView.Columns[3].HeaderText = resxSet.GetString("MatchesDataGridViewVisitors");
+
+                }
+            }
         }
 
         private void LoadPlayersRanksToDataGridView()
         {
             //dataGridView1.DataSource = players;
             playersDataGridView.Rows.Clear();
+            if (settings != null)
+            {
+                LocalizePlayerRankGridViewColumns();
+            }
+
+            //playersDataGridView.Columns[1].HeaderText = Properties.Resources
 
             foreach (var p in players)
             {
@@ -343,6 +399,35 @@ namespace WindowsForms_OOP_Projekt
                     p.Name, p.NumberOfGoals, p.NumberOfYellowCards, p.NumberOfRedCards);
             }
             playersDataGridView.Refresh();
+        }
+
+        private void LocalizePlayerRankGridViewColumns()
+        {
+            if (settings.LanguageCode == "hr")
+            {
+
+                using (ResXResourceSet resxSet = new ResXResourceSet(CroatianResources))
+                {
+                    playersDataGridView.Columns[0].HeaderText = resxSet.GetString("PlayerDataGridViewImage");
+                    playersDataGridView.Columns[1].HeaderText = resxSet.GetString("PlayerDataGridViewName");
+                    playersDataGridView.Columns[2].HeaderText = resxSet.GetString("PlayerDataGridViewNumGoals");
+                    playersDataGridView.Columns[3].HeaderText = resxSet.GetString("PlayerDataGridViewNumYellow");
+                    playersDataGridView.Columns[4].HeaderText = resxSet.GetString("PlayerDataGridViewNumRed");
+
+                }
+            }
+            if (settings.LanguageCode == "en")
+            {
+                using (ResXResourceSet resxSet = new ResXResourceSet(EnglishResources))
+                {
+                    playersDataGridView.Columns[0].HeaderText = resxSet.GetString("PlayerDataGridViewImage");
+                    playersDataGridView.Columns[1].HeaderText = resxSet.GetString("PlayerDataGridViewName");
+                    playersDataGridView.Columns[2].HeaderText = resxSet.GetString("PlayerDataGridViewNumGoals");
+                    playersDataGridView.Columns[3].HeaderText = resxSet.GetString("PlayerDataGridViewNumYellow");
+                    playersDataGridView.Columns[4].HeaderText = resxSet.GetString("PlayerDataGridViewNumRed");
+
+                }
+            }
         }
 
         private Player LoadRankInfo(Player p, List<TeamEvent> teamEvents)
@@ -604,6 +689,22 @@ namespace WindowsForms_OOP_Projekt
                     break;
 
             }
+            var oldSettings = settings;
+            CheckAndApplySettingsAsync();
+            if (oldSettings.LanguageCode != settings.LanguageCode)
+            {
+            LocalizeTournamentGridViewColumns();
+            LocalizePlayerRankGridViewColumns();
+            //UpdateUIInitializeComponent(); I WISH
+
+            }
+            if (settings.ChampionshipGroup != oldSettings.ChampionshipGroup)
+            {
+                //RELOAD stuff
+            }
+            //REMOVE THIS TO NOT RUN EVERY TIME
+            UpdateUIInitializeComponent();
+            //IF(LanguageChanged)
             // dialogBoxWithResult.Close();
         }
 
