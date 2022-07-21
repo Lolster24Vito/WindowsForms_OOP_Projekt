@@ -90,7 +90,8 @@ namespace WpfApp_Projekt
                 LoadPlayerPicturesAsync();
                 LoadFavoriteTeam();
                 FillLeftCombobox(teamsEndpoint,teamsLocalEndpoint);
-
+                cbTeamR.ItemsSource = null;
+                cbTeamR.Items.Clear();
 
             }
             catch (Exception)
@@ -131,7 +132,7 @@ namespace WpfApp_Projekt
                  }
                  counter++;
              }
-            cbTeamL.Items.Clear();
+            cbTeamL.ItemsSource = null;
             cbTeamL.ItemsSource = teams;
             cbTeamL.SelectedIndex = selectedIndexFromFile;
 
@@ -226,12 +227,23 @@ namespace WpfApp_Projekt
         {
             new UserSettingsWindow().ShowDialog();
             CheckAndApplySettingsAsync();
+            Init();
         }
 
         private void cbTeamL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //  cbTeamR.SelectedIndex = -1;
+            try
+            {
+                if ((TeamModelVersion)cbTeamL.SelectedValue!= null){
             selectedCountryCode = ((TeamModelVersion) cbTeamL.SelectedValue).FifaCode.Trim();
+
+                }
+            }
+            catch (Exception)
+            {
+
+            }
             cbTeamR.ItemsSource = null;
             cbTeamR.Items.Clear();
             lblMatchResult.Content = "0 - 0";
