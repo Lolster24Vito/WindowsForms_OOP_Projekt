@@ -36,6 +36,7 @@
 
 
 
+        <Image Source="Resources\soccer-field.jpg" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="7" Stretch="Fill" Margin="50,0,50,0"   Grid.RowSpan="2" />
         <Button x:Name="btnSettings" Click="btnSettings_Click" >
             <Image Source="Resources\SettingsIcon.png"></Image>
         </Button>
@@ -57,7 +58,6 @@
 
         </Button>
 
-        <Image Source="Resources\soccer-field.jpg" Grid.ColumnSpan="7" Stretch="Fill" Margin="50,48,50,0" Grid.RowSpan="2"/>
         <ProgressBar Name="MyProgressBar" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center"
                      VerticalAlignment="Center"  Width="150" Height="20" IsIndeterminate="True" Visibility="Collapsed"/>
        

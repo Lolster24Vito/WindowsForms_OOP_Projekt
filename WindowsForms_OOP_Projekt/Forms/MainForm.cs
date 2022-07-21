@@ -40,6 +40,9 @@ namespace WindowsForms_OOP_Projekt
         private const string CroatianResources = @"..\..\Resources\Resources.resx";
         private const string EnglishResources = @"..\..\Resources\Resources.en.resx";
 
+        private const int FAV_PLAYERS_MAX=3;
+
+
         private UserSettings settings;
         private List<Player> players = new List<Player>();
         private List<Player> favPlayers = new List<Player>();
@@ -48,12 +51,14 @@ namespace WindowsForms_OOP_Projekt
         List<MatchesJson> AllTeamMatches;
 
         private string teamEndpoint = "";
+        private string teamLocalEndpoint = "";
+        
         private string matchesEndpoint = "";
+        private string matchesLocalEndpoint = "";
 
         private string favEndPoint = "";
 
 
-        private bool firstTimeLoadingComboBox = true;
 
         public MainForm()
         {
@@ -73,7 +78,10 @@ namespace WindowsForms_OOP_Projekt
 
 
 
-
+            myProgressBar.Minimum = 0;
+            myProgressBar.Maximum = 100;
+            myProgressBar.Value = 50;
+            myProgressBar.Visible = false;
 
 
 
@@ -82,7 +90,7 @@ namespace WindowsForms_OOP_Projekt
                 LoadPlayerPicturesAsync();
                 LoadFavoritePlayersAsync();
                 LoadFavoriteTeam();
-                FillComboBox(teamEndpoint);
+                FillComboBox(teamEndpoint,teamLocalEndpoint);
 
 
                 //  FillLabelTest();
@@ -191,13 +199,20 @@ namespace WindowsForms_OOP_Projekt
             if (settings.ChampionshipGroup == ChampionshipType.Male)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
+                matchesLocalEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT_LOCAL;
                 teamEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
+                teamLocalEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT_LOCAL;
                 favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_MALE_PLAYERS;
+
             }
             if (settings.ChampionshipGroup == ChampionshipType.Female)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
+                matchesLocalEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT_LOCAL;
+
                 teamEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
+                teamLocalEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT_LOCAL;
+
                 favEndPoint = DAL.Constants.ApiConstants.USER_FAVORITE_FEMALE_PLAYERS;
 
 
@@ -227,7 +242,6 @@ namespace WindowsForms_OOP_Projekt
         {
             this.Controls.Clear();
             InitializeComponent();
-            //TODO VITO REPLACE INIT with specific changes
             Init();
         }
 
@@ -250,21 +264,26 @@ namespace WindowsForms_OOP_Projekt
             Init();
         }
 
-        /*  private async void FillLabelTest()
-          {
-              List<MatchesJson> players = await repo.GetMatches(DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT,"ARG");
-              foreach (var player in players)
-              {
-                  player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
-              }
-          }*/
+       
         private async void LoadPlayers()
         {
-            //  players = await repo.GetMatches(DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT, "ARG");
-            AllTeamMatches = await repo.GetMatches(matchesEndpoint, selectedCountryCode);
+            myProgressBar.Visible = true;
+            myProgressBar.Value = 45;
+            try
+            {
+            AllTeamMatches = await repo.GetMatchesOnline(matchesEndpoint, selectedCountryCode);
+
+            }
+            catch (Exception)
+            {
+                AllTeamMatches = await repo.GetMatchesOffline(matchesLocalEndpoint, selectedCountryCode);
+            }
+            myProgressBar.Value = 70;
 
             if (AllTeamMatches == null || AllTeamMatches[0] == null)
             {
+                myProgressBar.Visible = false;
+                MessageBox.Show("Error:Couldn't load team matches");
 
                 return;
             }
@@ -319,18 +338,20 @@ namespace WindowsForms_OOP_Projekt
                 players.Add(p);
 
             }
+            myProgressBar.Value = 80;
 
 
             LoadPlayersToPanel();
+            myProgressBar.Value = 90;
+
             LoadPlayersRanksToDataGridView();
             LoadTournamentToDataGridView();
-            //if hometeam is selectedCountryCode get players
-            //if awayteam is selected countrycode get players
-            //todo starting eleven add as a local private variable
-            //VITO STAO SI OVDJE TODO:
-            // List<StartingEleven> startingEleven = firstMatchJson[0].HomeTeamStatistics.StartingEleven;
+            myProgressBar.Value = 100;
 
-            // player.HomeTeamStatistics.StartingEleven.ForEach(x => label1.Text += x.Name);
+            myProgressBar.Visible = false;
+
+
+           
 
         }
 
@@ -591,10 +612,24 @@ namespace WindowsForms_OOP_Projekt
             }
         }
 
-        private async void FillComboBox(string endpoint)
+        private async void FillComboBox(string endpoint,string localEndpoint)
         {
             cbTeams.Enabled = false;
-            var teams = await repo.GetTeams(endpoint);
+            List<TeamModelVersion> teams = new List<TeamModelVersion>();
+            try
+            {
+                teams = await repo.GetTeamsOnline(endpoint);
+            }
+            catch (Exception)
+            {
+
+                teams = await repo.GetTeamsOffline(localEndpoint);
+            }
+            if (teams.Count == 0)
+            {
+                MessageBox.Show("Error:Couldn't load teams");
+                return;
+            }
             int selectedIndexFromFile = 0;
             int counter = 0;
             foreach (var t in teams)
@@ -607,7 +642,6 @@ namespace WindowsForms_OOP_Projekt
                 counter++;
             }
             cbTeams.DataSource = teams;
-            firstTimeLoadingComboBox = false;
             cbTeams.SelectedIndex = selectedIndexFromFile;
 
 
@@ -629,8 +663,7 @@ namespace WindowsForms_OOP_Projekt
             playersDataGridView.Rows.Clear();
             playersDataGridView.Refresh();
 
-            if (!firstTimeLoadingComboBox)
-            {
+
 
                 var selected = cbTeams.SelectedValue;
                 selectedCountryCode = TeamModelVersion.GetFifaCodeFromString(selected.ToString());
@@ -646,7 +679,7 @@ namespace WindowsForms_OOP_Projekt
                 }
                 LoadPlayers();
                 //selectedCbIndex=cbTeams.SelectedIndex;
-            }
+            
 
         }
 
@@ -734,6 +767,9 @@ namespace WindowsForms_OOP_Projekt
         }
         public void SaveFootballPlayerFilePanel(FootballPlayerUserControl footballPlayer)
         {
+            if (favPlayers.Count < FAV_PLAYERS_MAX)
+            {
+
             var fbPlayer = footballPlayer.FootballPlayer;
             footballPlayer.Favorite = true;
             bool alreadyAdded = false;
@@ -752,6 +788,7 @@ namespace WindowsForms_OOP_Projekt
             SaveFavoritePlayers();
 
             AddFavoritePlayerToPanel(fbPlayer);
+            }
         }
 
         public void FavoriteFootballPlayer(FootballPlayerUserControl footballPlayer)

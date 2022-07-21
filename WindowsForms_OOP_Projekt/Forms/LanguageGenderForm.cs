@@ -36,7 +36,6 @@ namespace WindowsForms_OOP_Projekt.Forms
             string fileLines = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
 
             settings = UserSettings.ParseFromString(fileLines);
-            //this if is unneeded remove it TODO
             if (needToBeChecked == true)
             {
 

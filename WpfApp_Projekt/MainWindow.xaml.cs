@@ -33,7 +33,11 @@ namespace WpfApp_Projekt
        
        
         private string matchesEndpoint = "";
+        private string matchesLocalEndpoint = "";
+
+
         private string teamsEndpoint = "";
+        private string teamsLocalEndpoint = "";
 
         private string selectedCountryCode;
         private string selectedEnemyCountryCode;
@@ -57,6 +61,15 @@ namespace WpfApp_Projekt
             CheckAndApplySettingsAsync();
             SetCulture(settings.LanguageCode);
             InitializeComponent();
+            if (settings != null && settings.Resolution != null)
+            {
+
+                this.Height = settings.Resolution.Y;
+                this.Width = settings.Resolution.X;
+                if(settings.IsFullscreen)
+                this.WindowState = WindowState.Maximized;
+                else this.WindowState=WindowState.Normal;
+            }
             Init();
         }
 
@@ -76,7 +89,8 @@ namespace WpfApp_Projekt
             {
                 LoadPlayerPicturesAsync();
                 LoadFavoriteTeam();
-                FillLeftCombobox(teamsEndpoint);
+                FillLeftCombobox(teamsEndpoint,teamsLocalEndpoint);
+
 
             }
             catch (Exception)
@@ -92,11 +106,21 @@ namespace WpfApp_Projekt
             FileRepo.SaveToFile(selectedCountryCode, DAL.Constants.ApiConstants.USER_FAVORITE_TEAM);
         }
 
-        private async void FillLeftCombobox(string endpoint)
+        private async void FillLeftCombobox(string endpoint,string localEndpoint)
         {
             MyProgressBar.Visibility = Visibility.Visible;
-            List<TeamModelVersion> teams = await repo.GetTeams(endpoint);
-             int selectedIndexFromFile = 0;
+            List<TeamModelVersion> teams = new List<TeamModelVersion>();
+            try
+            {
+                teams = await repo.GetTeamsOnline(endpoint);
+            }
+            catch (Exception)
+            {
+
+                teams = await repo.GetTeamsOffline(localEndpoint);
+            }
+            if (teams.Count == 0) return;
+            int selectedIndexFromFile = 0;
              int counter = 0;
              foreach (var t in teams)
              {
@@ -154,19 +178,34 @@ namespace WpfApp_Projekt
                 string fileLiness = await FileRepo.ReadFromFile(USER_SETTINGS_PATH);
                 settings = UserSettings.ParseFromString(fileLiness);
             }
+
+
             if (settings.ChampionshipGroup == ChampionshipType.Male)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT;
+                matchesLocalEndpoint = DAL.Constants.ApiConstants.MALE_MATCHES_ENDPOINT_LOCAL;
                 teamsEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT;
+                teamsLocalEndpoint = DAL.Constants.ApiConstants.MALE_TEAMS_ENDPOINT_LOCAL;
 
             }
             if (settings.ChampionshipGroup == ChampionshipType.Female)
             {
                 matchesEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT;
+                matchesLocalEndpoint = DAL.Constants.ApiConstants.FEMALE_MATCHES_ENDPOINT_LOCAL;
+
                 teamsEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT;
+                teamsLocalEndpoint = DAL.Constants.ApiConstants.FEMALE_TEAMS_ENDPOINT_LOCAL;
+
 
             }
-            //SetCulture(settings.LanguageCode);
+
+            this.Height = settings.Resolution.Y;
+            this.Width = settings.Resolution.X;
+
+            if (settings.IsFullscreen)
+                this.WindowState = WindowState.Maximized;
+            else this.WindowState = WindowState.Normal;
+
             if (oldSettings!=null&&settings.LanguageCode != oldSettings.LanguageCode)
             {
                 lTeamDetailsButtonText.Text = Properties.Resources.TeamDetails;
@@ -181,7 +220,6 @@ namespace WpfApp_Projekt
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
             Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
 
-            // UpdateUIInitializeComponent(language);
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -215,13 +253,23 @@ namespace WpfApp_Projekt
         {
 
             MyProgressBar.Visibility = Visibility.Visible;
-            AllTeamMatches = await repo.GetMatches(matchesEndpoint, selectedCountryCode);
+            try
+            {
+            AllTeamMatches = await repo.GetMatchesOnline(matchesEndpoint, selectedCountryCode);
 
-            if (AllTeamMatches == null || AllTeamMatches[0] == null)
+            }
+            catch (Exception)
+            {
+                MyProgressBar.Visibility = Visibility.Visible;
+                AllTeamMatches = await repo.GetMatchesOffline(matchesLocalEndpoint, selectedCountryCode);
+
+            }
+
+            if (AllTeamMatches == null || AllTeamMatches[0] == null||AllTeamMatches.Count==0)
             {
 
-                MyProgressBar.Visibility = Visibility.Collapsed;
                 MessageBox.Show("An error occuered cannot find matches of country");
+                MyProgressBar.Visibility = Visibility.Collapsed;
 
                 return;
             }
@@ -416,9 +464,24 @@ namespace WpfApp_Projekt
             MyProgressBar.Visibility = Visibility.Visible;
 
             Team selectedTeam = (Team)cbTeamR.SelectedValue;
-            var enemyTeamMatches = await repo.GetMatches(matchesEndpoint, selectedEnemyCountryCode);
-            MyProgressBar.Visibility = Visibility.Collapsed;
 
+            List<MatchesJson> enemyTeamMatches = new List<MatchesJson>();
+            try
+            {
+                enemyTeamMatches=await repo.GetMatchesOnline(matchesEndpoint, selectedEnemyCountryCode);
+            }
+            catch (Exception)
+            {
+                enemyTeamMatches= await repo.GetMatchesOnline(matchesLocalEndpoint, selectedEnemyCountryCode);
+
+            }
+
+            MyProgressBar.Visibility = Visibility.Collapsed;
+            if (enemyTeamMatches.Count == 0) {
+                MyProgressBar.Visibility = Visibility.Collapsed;
+                MessageBox.Show("An error occuered cannot find matches right country");
+                return;
+            }
             new TeamDetails(enemyTeamMatches, selectedTeam).ShowDialog();
 
 

@@ -2,3 +2,4 @@ LEE Yong|False|2|0||Korea Republic
 PARK Jooho|False|6|0||Korea Republic
 SON Heungmin|False|7|1||Korea Republic
 JO Hyeonwoo|False|23|2||Korea Republic
+Kalidou KOULIBALY|False|3|0||Senegal

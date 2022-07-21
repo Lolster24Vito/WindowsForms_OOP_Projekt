@@ -117,28 +117,65 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="btnSettings.Text" xml:space="preserve">
-    <value>Localization and championship type</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="flpFavoritePlayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>893, 207</value>
+  </data>
+  <data name="flpAllTeamPlayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>893, 383</value>
+  </data>
+  <data name="splitContainer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>893, 594</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="splitContainer1.SplitterDistance" type="System.Int32, mscorlib">
+    <value>207</value>
+  </data>
+  <data name="tabControlPlayers.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 11</value>
+  </data>
+  <data name="tabControlPlayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>938, 687</value>
+  </data>
+  <data name="tabPageTeams.Size" type="System.Drawing.Size, System.Drawing">
+    <value>899, 598</value>
   </data>
   <data name="tabPageTeams.Text" xml:space="preserve">
     <value>Teams</value>
   </data>
+  <data name="btnSettings.Text" xml:space="preserve">
+    <value>Localization and championship type</value>
+  </data>
+  <data name="tabPagePlayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>899, 598</value>
+  </data>
   <data name="tabPagePlayers.Text" xml:space="preserve">
     <value>Players</value>
   </data>
-  <data name="btnPreviewPlayers.Text" xml:space="preserve">
-    <value>Preview</value>
+  <data name="tabPageRankPlayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>899, 598</value>
   </data>
   <data name="tabPageRankPlayers.Text" xml:space="preserve">
     <value>Players rank</value>
   </data>
-  <data name="btnPreviewMatches.Text" xml:space="preserve">
+  <data name="flpPlayerRank.Size" type="System.Drawing.Size, System.Drawing">
+    <value>893, 592</value>
+  </data>
+  <data name="btnPreviewPlayers.Text" xml:space="preserve">
     <value>Preview</value>
+  </data>
+  <data name="tabPageRankTournament.Size" type="System.Drawing.Size, System.Drawing">
+    <value>930, 658</value>
   </data>
   <data name="tabPageRankTournament.Text" xml:space="preserve">
     <value>Tournament rank</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>924, 652</value>
+  </data>
+  <data name="btnPreviewMatches.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
   <data name="printPreviewDialog.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAICAQAAAAAADoAgAAZgAAABAQEAAAAAAAKAEAAE4DAAAgIAAAAQAIAKgIAAB2BAAAEBAAAAEA

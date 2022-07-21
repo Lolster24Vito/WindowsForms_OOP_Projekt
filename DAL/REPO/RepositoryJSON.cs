@@ -10,14 +10,13 @@ using Newtonsoft.Json;
 using DAL.Constants;
 using System.IO;
 using System.Text.Json;
-
+using DAL.REPO;
 
 namespace DAL
 {
     public class RepositoryJSON:IRepoJSONDeserialize
     {
-
-        public Task<List<TeamModelVersion>> GetTeams(string endpoint)
+        public Task<List<TeamModelVersion>> GetTeamsOnline(string endpoint)
         {
             try
             {
@@ -27,7 +26,7 @@ namespace DAL
                     var apiResult = apiClient.ExecuteAsync<List<TeamModelVersion>>(new RestRequest());
 
                     var teamList = JsonConvert.DeserializeObject<List<TeamModelVersion>>(apiResult.Result.Content);
-
+                   // throw new Exception("TestAlwaysFail");
                     return teamList;
 
                 });
@@ -37,7 +36,22 @@ namespace DAL
                 return null;
             }
         }
-        public Task<List<MatchesJson>> GetMatches(string endpoint, string fifaCode)
+        public Task<List<TeamModelVersion>> GetTeamsOffline(string endpoint)
+        {
+            try
+            {
+
+                return Task.Run(() => {
+                    return JsonConvert.DeserializeObject<List<TeamModelVersion>>(FileRepo.ReadFromFile(endpoint).Result);
+
+                });
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public Task<List<MatchesJson>> GetMatchesOnline(string endpoint, string fifaCode)
         {
             return Task.Run(() => {
                 var apiClient = new RestClient(endpoint + "/country?fifa_code=" + fifaCode);
@@ -56,6 +70,27 @@ namespace DAL
 
             });
         }
+        public Task<List<MatchesJson>> GetMatchesOffline(string endpoint, string fifaCode)
+        {
+            try
+            {
+                
+                return (Task.Run(() => {
+                    return JsonConvert.DeserializeObject<List<MatchesJson>>(FileRepo.ReadFromFile(endpoint).Result)
+                    .ToList().Where(m => m.HomeTeam.Code == fifaCode || m.AwayTeam.Code == fifaCode).ToList();
+
+                }));
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+
+
+        }
+
 
         public Task<MatchesJson> GetFirstMatch(string endpoint, string fifaCode)
         {
@@ -70,64 +105,9 @@ namespace DAL
             });
         }
 
-        public Task<TeamModelVersion> GetTeam(string endpoint, string fifaCode)
-        {
-            throw new NotImplementedException();
-        }
 
 
 
 
-        /*
-         * public Task<List<Team>> GetTeams()
-        {
-            return Task.Run(() => {
-                var apiClient = new RestClient(ApiConstants.ENDPOINT);
-                var apiResult = apiClient.ExecuteAsync<List<Team>>(new RestRequest());
-
-
-                return JsonConvert.DeserializeObject<List<Team>>(apiResult.Result.Content);
-
-            });
-        }
-        */
-
-
-        /*
-        private  Task<IRestResponse<TeamsData>> GetRawData()
-        {
-            var apiClient = new RestClient(ApiConstants.ENDPOINT);
-            return apiClient.ExecuteAsync<TeamsData>(new RestRequest());
-        }
-        private TeamsData GetDeserializedObject(IRestResponse<TeamsData> teamsRawData)
-        {
-            return JsonConvert.DeserializeObject<TeamsData>(teamsRawData.Content);
-        }
-
-        private Task<Team> GetData()
-        {
-            return Task.Run(() =>
-            {
-                var apiClient = new RestClient(ApiConstants.ENDPOINT);
-                var apiResult = apiClient.Execute<Team>(new RestRequest());
-
-                // Simulates long operation
-
-                return JsonConvert.DeserializeObject<Team>(apiResult.Content);
-            });
-        }
-
-        private List<Team> GetDataSync()
-        {
-            var apiClient = new RestClient(ApiConstants.ENDPOINT);
-            var apiResult = apiClient.Execute<TeamsData>(new RestRequest());
-            return JsonConvert.DeserializeObject<List<Team>>(apiResult.Content);
-        }
-        private Team[] GetDataFile()
-        {
-            string jsonString =@"C:\Users\vitom\source\repos\WindowsForms_OOP_Projekt\DAL\teams.json";
-            return System.Text.Json.JsonSerializer.Deserialize<Team[]>(jsonString);
-        }
-        */
     }
 }

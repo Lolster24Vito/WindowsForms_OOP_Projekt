@@ -74,10 +74,10 @@ namespace DAL.Models
         public TeamStatistics AwayTeamStatistics { get; set; }
 
         [JsonProperty("last_event_update_at")]
-        public DateTimeOffset LastEventUpdateAt { get; set; }
+        public DateTimeOffset? LastEventUpdateAt { get; set; }
 
         [JsonProperty("last_score_update_at")]
-        public DateTimeOffset LastScoreUpdateAt { get; set; }
+        public DateTimeOffset? LastScoreUpdateAt { get; set; }
     }
 
     public partial class Team
@@ -166,7 +166,7 @@ namespace DAL.Models
         public long RedCards { get; set; }
 
         [JsonProperty("fouls_committed")]
-        public long FoulsCommitted { get; set; }
+        public long? FoulsCommitted { get; set; }
 
         [JsonProperty("tactics")]
         public string Tactics { get; set; }

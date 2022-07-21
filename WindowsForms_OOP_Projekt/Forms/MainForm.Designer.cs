@@ -60,6 +60,7 @@
             this.printDialog = new System.Windows.Forms.PrintDialog();
             this.pageSetupDialog = new System.Windows.Forms.PageSetupDialog();
             this.printPreviewDialog = new System.Windows.Forms.PrintPreviewDialog();
+            this.myProgressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -82,18 +83,16 @@
             // 
             // splitContainer1.Panel1
             // 
-            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
             this.splitContainer1.Panel1.Controls.Add(this.flpFavoritePlayers);
             // 
             // splitContainer1.Panel2
             // 
-            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
             this.splitContainer1.Panel2.Controls.Add(this.flpAllTeamPlayers);
             // 
             // flpFavoritePlayers
             // 
-            resources.ApplyResources(this.flpFavoritePlayers, "flpFavoritePlayers");
             this.flpFavoritePlayers.AllowDrop = true;
+            resources.ApplyResources(this.flpFavoritePlayers, "flpFavoritePlayers");
             this.flpFavoritePlayers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flpFavoritePlayers.Name = "flpFavoritePlayers";
             this.flpFavoritePlayers.Click += new System.EventHandler(this.flpFavoritePlayers_Click);
@@ -109,19 +108,19 @@
             // 
             // tabControlPlayers
             // 
-            resources.ApplyResources(this.tabControlPlayers, "tabControlPlayers");
             this.tabControlPlayers.Controls.Add(this.tabPageTeams);
             this.tabControlPlayers.Controls.Add(this.tabPagePlayers);
             this.tabControlPlayers.Controls.Add(this.tabPageRankPlayers);
             this.tabControlPlayers.Controls.Add(this.tabPageRankTournament);
+            resources.ApplyResources(this.tabControlPlayers, "tabControlPlayers");
             this.tabControlPlayers.Name = "tabControlPlayers";
             this.tabControlPlayers.SelectedIndex = 0;
             // 
             // tabPageTeams
             // 
-            resources.ApplyResources(this.tabPageTeams, "tabPageTeams");
             this.tabPageTeams.Controls.Add(this.btnSettings);
             this.tabPageTeams.Controls.Add(this.cbTeams);
+            resources.ApplyResources(this.tabPageTeams, "tabPageTeams");
             this.tabPageTeams.Name = "tabPageTeams";
             this.tabPageTeams.UseVisualStyleBackColor = true;
             // 
@@ -141,24 +140,24 @@
             // 
             // tabPagePlayers
             // 
-            resources.ApplyResources(this.tabPagePlayers, "tabPagePlayers");
             this.tabPagePlayers.Controls.Add(this.splitContainer1);
+            resources.ApplyResources(this.tabPagePlayers, "tabPagePlayers");
             this.tabPagePlayers.Name = "tabPagePlayers";
             this.tabPagePlayers.UseVisualStyleBackColor = true;
             // 
             // tabPageRankPlayers
             // 
-            resources.ApplyResources(this.tabPageRankPlayers, "tabPageRankPlayers");
             this.tabPageRankPlayers.Controls.Add(this.flpPlayerRank);
+            resources.ApplyResources(this.tabPageRankPlayers, "tabPageRankPlayers");
             this.tabPageRankPlayers.Name = "tabPageRankPlayers";
             this.tabPageRankPlayers.UseVisualStyleBackColor = true;
             // 
             // flpPlayerRank
             // 
-            resources.ApplyResources(this.flpPlayerRank, "flpPlayerRank");
             this.flpPlayerRank.Controls.Add(this.btnPrintPlayers);
             this.flpPlayerRank.Controls.Add(this.btnPreviewPlayers);
             this.flpPlayerRank.Controls.Add(this.playersDataGridView);
+            resources.ApplyResources(this.flpPlayerRank, "flpPlayerRank");
             this.flpPlayerRank.Name = "flpPlayerRank";
             // 
             // btnPrintPlayers
@@ -177,7 +176,6 @@
             // 
             // playersDataGridView
             // 
-            resources.ApplyResources(this.playersDataGridView, "playersDataGridView");
             this.playersDataGridView.AllowUserToAddRows = false;
             this.playersDataGridView.AllowUserToDeleteRows = false;
             this.playersDataGridView.AllowUserToOrderColumns = true;
@@ -188,6 +186,7 @@
             this.NumberOfGoals,
             this.NumberOfYellowCards,
             this.NumberOfRedCards});
+            resources.ApplyResources(this.playersDataGridView, "playersDataGridView");
             this.playersDataGridView.Name = "playersDataGridView";
             this.playersDataGridView.ReadOnly = true;
             this.playersDataGridView.RowTemplate.Height = 24;
@@ -230,17 +229,17 @@
             // 
             // tabPageRankTournament
             // 
-            resources.ApplyResources(this.tabPageRankTournament, "tabPageRankTournament");
             this.tabPageRankTournament.Controls.Add(this.flowLayoutPanel1);
+            resources.ApplyResources(this.tabPageRankTournament, "tabPageRankTournament");
             this.tabPageRankTournament.Name = "tabPageRankTournament";
             this.tabPageRankTournament.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.btnPrintMatches);
             this.flowLayoutPanel1.Controls.Add(this.btnPreviewMatches);
             this.flowLayoutPanel1.Controls.Add(this.MatchesDataGridView);
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
             // btnPrintMatches
@@ -259,7 +258,6 @@
             // 
             // MatchesDataGridView
             // 
-            resources.ApplyResources(this.MatchesDataGridView, "MatchesDataGridView");
             this.MatchesDataGridView.AllowUserToAddRows = false;
             this.MatchesDataGridView.AllowUserToDeleteRows = false;
             this.MatchesDataGridView.AllowUserToOrderColumns = true;
@@ -271,6 +269,7 @@
             this.home_teamColumn,
             this.away_teamColumn,
             this.numberOfVisitors});
+            resources.ApplyResources(this.MatchesDataGridView, "MatchesDataGridView");
             this.MatchesDataGridView.Name = "MatchesDataGridView";
             this.MatchesDataGridView.RowTemplate.Height = 24;
             // 
@@ -318,10 +317,16 @@
             this.printPreviewDialog.Document = this.printDocument;
             this.printPreviewDialog.Name = "printPreviewDialog";
             // 
+            // myProgressBar
+            // 
+            resources.ApplyResources(this.myProgressBar, "myProgressBar");
+            this.myProgressBar.Name = "myProgressBar";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.myProgressBar);
             this.Controls.Add(this.tabControlPlayers);
             this.Name = "MainForm";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
@@ -378,6 +383,7 @@
         private System.Windows.Forms.PrintDialog printDialog;
         private System.Windows.Forms.PageSetupDialog pageSetupDialog;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog;
+        private System.Windows.Forms.ProgressBar myProgressBar;
     }
 }
 
